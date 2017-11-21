@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">RoboticSimulatorController</string>
+
+    <string name="connect">connect</string>
+    <string name="grab">grab</string>
+    <string name="tipUp">tip up</string>
+    <string name="tipDown">tip down</string>
 </resources>
