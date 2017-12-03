@@ -6,7 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),MainContract.View {
+
 
     var bluetoothSelection: String? = null
 
@@ -48,5 +49,14 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+    }
+
+
+    override fun setPresenter(presenter: MainContract.Presenter) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun updateView() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
