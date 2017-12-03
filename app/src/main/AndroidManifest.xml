@@ -18,7 +18,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ControllerActivity" />
+        <activity android:name=".ControllerActivity"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

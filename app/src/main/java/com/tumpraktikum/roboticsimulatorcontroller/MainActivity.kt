@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tryConnection() {
+        bluetoothSelection = "whatever"
         if (bluetoothSelection == null) {
             Toast.makeText(this, "Please select the bluetooth device you want to connect to first.", Toast.LENGTH_LONG).show()
             return
