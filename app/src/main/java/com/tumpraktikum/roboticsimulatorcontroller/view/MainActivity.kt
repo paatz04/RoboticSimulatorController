@@ -1,36 +1,29 @@
-package com.tumpraktikum.roboticsimulatorcontroller
+package com.tumpraktikum.roboticsimulatorcontroller.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
+import com.tumpraktikum.roboticsimulatorcontroller.R
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MainContract
+import com.tumpraktikum.roboticsimulatorcontroller.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(),MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View {
 
-
-    var bluetoothSelection: String? = null
+    @Inject lateinit var mPresenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        btnConnect.setOnClickListener { tryConnection() }
+        btnConnect.setOnClickListener { mPresenter.checkIfBluetoothOn() }
     }
 
-    override fun onStart() {
-        super.onStart()
-        setViewState();
+    override fun onResume() {
+        super.onResume()
+        //mPresenter.takeView(this);
     }
 
-    private fun tryConnection() {
-        bluetoothSelection = "whatever"
-        if (bluetoothSelection == null) {
-            Toast.makeText(this, "Please select the bluetooth device you want to connect to first.", Toast.LENGTH_LONG).show()
-            return
-        }
-        connect()
-    }
 
     private fun connect() {
         var success = true;
@@ -46,17 +39,16 @@ class MainActivity : AppCompatActivity(),MainContract.View {
     private fun setViewState() {
         var state = 0;
         when (state) {
-
-
+            
         }
     }
 
-
-    override fun setPresenter(presenter: MainContract.Presenter) {
+    override fun showEmptyView() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun updateView() {
+    override fun showBluetoothDevices() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
 }
