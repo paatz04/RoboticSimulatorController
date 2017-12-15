@@ -1,7 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.dagger
 
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
-import com.tumpraktikum.roboticsimulatorcontroller.presenter.MainPresenter
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,8 +9,8 @@ import javax.inject.Singleton
  * Created by patriccorletto on 12/15/17.
  */
 @Module
-class PresenterModule {
+class BluetoothModule {
     @Provides
     @Singleton
-    fun provideMainPresenter(myBluetoothManager: MyBluetoothManager): MainPresenter = MainPresenter(myBluetoothManager)
+    fun providesBluetoothManager(): MyBluetoothManager = MyBluetoothManager()
 }

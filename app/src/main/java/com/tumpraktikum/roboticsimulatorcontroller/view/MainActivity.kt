@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         btnConnect.setOnClickListener { mPresenter.checkIfBluetoothOn() }
 
         (application as App).appComponent.inject(this)
-
     }
 
     override fun onResume() {
@@ -40,5 +39,4 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun showBluetoothDevices() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }
