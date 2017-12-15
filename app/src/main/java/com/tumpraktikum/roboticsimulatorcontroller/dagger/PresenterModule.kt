@@ -1,7 +1,7 @@
 package com.tumpraktikum.roboticsimulatorcontroller.dagger
 
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
-import com.tumpraktikum.roboticsimulatorcontroller.presenter.MainPresenter
+import com.tumpraktikum.roboticsimulatorcontroller.main.MainPresenter
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

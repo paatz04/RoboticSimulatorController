@@ -1,7 +1,7 @@
 package com.tumpraktikum.roboticsimulatorcontroller.dagger
 
-import com.tumpraktikum.roboticsimulatorcontroller.view.ControllerActivity
-import com.tumpraktikum.roboticsimulatorcontroller.view.MainActivity
+import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
+import com.tumpraktikum.roboticsimulatorcontroller.main.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 

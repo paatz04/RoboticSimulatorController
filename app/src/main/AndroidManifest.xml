@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.ControllerActivity"
+        <activity android:name=".controller.ControllerActivity"
                   android:screenOrientation="landscape"
                   android:theme="@style/AppTheme.NoActionBar"
             />

@@ -1,12 +1,11 @@
-package com.tumpraktikum.roboticsimulatorcontroller.view
+package com.tumpraktikum.roboticsimulatorcontroller.main
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.application.App
-import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MainContract
-import com.tumpraktikum.roboticsimulatorcontroller.presenter.MainPresenter
+import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 

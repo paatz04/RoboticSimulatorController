@@ -1,4 +1,4 @@
-package com.tumpraktikum.roboticsimulatorcontroller.view
+package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

@@ -1,8 +1,7 @@
-package com.tumpraktikum.roboticsimulatorcontroller.presenter
+package com.tumpraktikum.roboticsimulatorcontroller.main
 
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
-import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MainContract
 import javax.inject.Inject
 
 
