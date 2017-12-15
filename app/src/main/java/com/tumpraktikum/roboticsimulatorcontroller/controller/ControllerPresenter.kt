@@ -1,5 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
+import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import javax.inject.Inject
 
@@ -16,6 +17,7 @@ class ControllerPresenter @Inject constructor(private val myBluetoothManager: My
     }
 
     override fun checkConnection() {
+        Log.d("tag", myBluetoothManager.toString())
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
