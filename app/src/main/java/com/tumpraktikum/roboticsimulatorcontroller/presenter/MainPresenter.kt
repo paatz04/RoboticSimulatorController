@@ -14,9 +14,8 @@ class MainPresenter: MainContract.Presenter {
     @Inject
     lateinit var mMyBluetoothManager: MyBluetoothManager
 
-
     fun MainPresenter(){
-        
+
     }
     override fun takeView(view: MainContract.View) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
