@@ -21,26 +21,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onResume() {
         super.onResume()
-        //mPresenter.takeView(this);
+        mPresenter.takeView(this)
     }
 
-
-    private fun connect() {
-        var success = true;
-        if (success)
-            openControllerActivity()
-    }
-
-    private fun openControllerActivity() {
+    override fun openControllerActivity() {
         val intent = Intent(this, ControllerActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun setViewState() {
-        var state = 0;
-        when (state) {
-            
-        }
     }
 
     override fun showEmptyView() {

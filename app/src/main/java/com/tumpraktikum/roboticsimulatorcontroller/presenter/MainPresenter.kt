@@ -11,13 +11,14 @@ import javax.inject.Inject
  */
 class MainPresenter: MainContract.Presenter {
 
-    //private var mMyBluetoothManager: MyBluetoothManager
-
     @Inject
-    fun MainPresenter(myBluetoothManager: MyBluetoothManager){
-        //myBluetoothManager = myBluetoothManager
+    lateinit var mMyBluetoothManager: MyBluetoothManager
+
+
+    fun MainPresenter(){
+        
     }
-    override fun takeView() {
+    override fun takeView(view: MainContract.View) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
