@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        btnConnect.setOnClickListener { mPresenter.checkIfBluetoothOn() }
+        // btnConnect.setOnClickListener { mPresenter.checkIfBluetoothOn() }
+        btnConnect.setOnClickListener{ openControllerActivity() }
 
         (application as App).appComponent.inject(this)
     }
