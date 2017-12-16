@@ -5,9 +5,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-/**
- * Created by patriccorletto on 12/15/17.
- */
 @Module
 class BluetoothModule {
     @Provides

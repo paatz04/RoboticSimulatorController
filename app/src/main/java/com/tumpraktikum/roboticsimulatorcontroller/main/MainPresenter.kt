@@ -5,12 +5,10 @@ import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import javax.inject.Inject
 
 
-/**
- * Created by patriccorletto on 12/3/17.
- */
-class MainPresenter @Inject constructor(private val myBluetoothManager: MyBluetoothManager) : MainContract.Presenter {
+class MainPresenter @Inject constructor(private val myBluetoothManager: MyBluetoothManager) :
+        MainContract.Presenter {
 
-    private var view: MainContract.View? = null;
+    private var view: MainContract.View? = null
 
     override fun takeView(view: MainContract.View) {
         this.view = view
