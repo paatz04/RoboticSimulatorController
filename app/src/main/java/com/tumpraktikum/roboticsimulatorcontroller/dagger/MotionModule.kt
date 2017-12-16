@@ -1,6 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.dagger
 
-import com.tumpraktikum.roboticsimulatorcontroller.helper.MotionManager
+import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.MotionManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

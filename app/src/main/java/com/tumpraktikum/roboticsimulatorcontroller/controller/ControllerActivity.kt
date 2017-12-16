@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.application.App
+import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.MotionManager
 import javax.inject.Inject
 
 class ControllerActivity : AppCompatActivity(), ControllerContract.View {
 
     @Inject lateinit var mPresenter: ControllerPresenter
+    @Inject lateinit var mMotionManager: MotionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
