@@ -1,10 +1,14 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.util.Log
+import com.tumpraktikum.roboticsimulatorcontroller.helper.MotionManager
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import javax.inject.Inject
 
-class ControllerPresenter @Inject constructor(private val myBluetoothManager: MyBluetoothManager) : ControllerContract.Presenter {
+class ControllerPresenter
+@Inject constructor(private val myBluetoothManager: MyBluetoothManager,
+                    private val motionManager: MotionManager)
+    : ControllerContract.Presenter {
 
     private var view: ControllerContract.View? = null;
 

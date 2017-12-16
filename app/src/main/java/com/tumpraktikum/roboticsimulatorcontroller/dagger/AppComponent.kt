@@ -7,7 +7,12 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [AppModule::class, PresenterModule::class, BluetoothModule::class])
+@Component(modules = [
+    AppModule::class,
+    PresenterModule::class,
+    BluetoothModule::class,
+    MotionModule::class
+])
 interface AppComponent {
     fun inject(target: MainActivity)
     fun inject(target: ControllerActivity)
