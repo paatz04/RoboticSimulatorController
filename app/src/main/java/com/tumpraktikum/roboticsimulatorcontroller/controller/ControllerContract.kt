@@ -1,4 +1,5 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
+import android.hardware.SensorManager
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.*
 
 interface ControllerContract {
@@ -8,10 +9,8 @@ interface ControllerContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun checkConnection()
-        fun changeGrab(newValue: Double)
-        fun changeTip(newValue: Double)
-        fun changBody(newValue: Double)
-        fun changeRotation(newValue: Double)
+        fun setSensorManager(sensorManager: SensorManager)
+        fun onResume()
+        fun onPause()
     }
 }

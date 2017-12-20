@@ -17,11 +17,11 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
 
     @Inject lateinit var mPresenter: ControllerPresenter
 
-    val mSensorManager : SensorManager by lazy {
+    private val mSensorManager : SensorManager by lazy {
+        // by lazy this code is only executed the first time
         getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
 
-    lateinit var mSensor : Sensor
     var mSensorEventListener =  object : SensorEventListener {
         override fun onAccuracyChanged(sensor : Sensor, accuracy : Int) {}
 
@@ -39,14 +39,13 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
         setContentView(R.layout.activity_controller)
 
         (application as App).appComponent.inject(this)
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
     }
 
     override fun onResume() {
         super.onResume()
         mPresenter.takeView(this)
 
-        mSensorManager.registerListener(mSensorEventListener, mSensor, SensorManager.SENSOR_DELAY_NORMAL)
+
     }
 
     override fun onPause() {
