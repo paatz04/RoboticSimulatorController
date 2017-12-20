@@ -2,9 +2,6 @@ package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -46,17 +43,12 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun setXValue(x: Float) {
-        sensorX.text = "x: " + x
+    override fun setBody(value: Float) {
+        tvValueBody.text = "Body: " + value
     }
 
     @SuppressLint("SetTextI18n")
-    override fun setYValue(y: Float) {
-        sensorY.text = "y: " + y
-    }
-
-    @SuppressLint("SetTextI18n")
-    override fun setZValue(z: Float) {
-        sensorZ.text = "z: " + z
+    override fun setRotation(value: Float) {
+        tvValueRotation.text = "Rotation: " + value
     }
 }

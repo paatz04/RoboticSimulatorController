@@ -1,7 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.hardware.SensorManager
-import android.telecom.Call
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerSensorHandler
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.SensorHandler
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
@@ -11,6 +10,7 @@ class ControllerPresenter
 @Inject
 constructor(private val myBluetoothManager: MyBluetoothManager)
     : ControllerContract.Presenter, CallerSensorHandler {
+
 
     private var mView: ControllerContract.View? = null
     private lateinit var mSensorHandler : SensorHandler
@@ -38,14 +38,12 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
     }
 
     override fun onChangeXAxis(newXValue : Float) {
-        mView?.setXValue(newXValue)
+        mView?.setBody(newXValue)
     }
 
     override fun onChangeYAxis(newYValue : Float) {
-        mView?.setYValue(newYValue)
+        mView?.setRotation(newYValue)
     }
 
-    override fun onChangeZAxis(newZValue : Float) {
-        mView?.setZValue(newZValue)
-    }
+    override fun onChangeZAxis(newZValue: Float) { }
 }

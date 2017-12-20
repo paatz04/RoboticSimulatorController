@@ -6,9 +6,8 @@ interface ControllerContract {
 
     interface View : BaseView<Presenter> {
         fun showEmptyView()
-        fun setXValue(x : Float)
-        fun setYValue(y : Float)
-        fun setZValue(z : Float)
+        fun setBody(value: Float)
+        fun setRotation(value: Float)
     }
 
     interface Presenter : BasePresenter<View> {
