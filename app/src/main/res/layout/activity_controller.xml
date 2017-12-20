@@ -37,4 +37,27 @@
         android:layout_alignStart="@+id/btnTipUp"
         android:layout_below="@+id/btnGrab"
         android:text="@string/tipDown"/>
+
+    <TextView
+        android:id="@+id/sensorX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnTipUp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/sensorY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/sensorX"
+        android:layout_alignRight="@+id/sensorX"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/sensorZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sensorY"
+        android:layout_alignStart="@+id/sensorY"
+        android:layout_alignTop="@+id/btnTipDown" />
 </RelativeLayout>
