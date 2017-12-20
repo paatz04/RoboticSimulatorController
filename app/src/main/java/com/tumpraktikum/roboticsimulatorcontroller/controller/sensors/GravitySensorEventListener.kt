@@ -1,8 +1,9 @@
-package com.tumpraktikum.roboticsimulatorcontroller.controller.helper.enums
+package com.tumpraktikum.roboticsimulatorcontroller.controller.sensors
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
+import android.util.Log
 
 class GravitySensorEventListener(private var mSensorHandler: SensorHandler)
     : SensorEventListener {
@@ -16,9 +17,7 @@ class GravitySensorEventListener(private var mSensorHandler: SensorHandler)
     private var mZValue: Float = 0F
 
 
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        TODO("not implemented")
-    }
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) { }
 
     override fun onSensorChanged(event : SensorEvent) {
         val values = event.values

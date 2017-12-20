@@ -1,16 +1,16 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
-import android.content.Context
 import android.hardware.SensorManager
-import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.enums.GravitySensorEventListener
-import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.enums.SensorHandler
+import android.telecom.Call
+import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerSensorHandler
+import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.SensorHandler
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import javax.inject.Inject
 
 class ControllerPresenter
 @Inject
 constructor(private val myBluetoothManager: MyBluetoothManager)
-    : ControllerContract.Presenter {
+    : ControllerContract.Presenter, CallerSensorHandler {
 
     private var mView: ControllerContract.View? = null
     private lateinit var mSensorHandler : SensorHandler
@@ -26,7 +26,7 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
 
     override fun setSensorManager(sensorManager: SensorManager) {
         // TODO: realize with dagger
-        mSensorHandler = SensorHandler(sensorManager)
+        mSensorHandler = SensorHandler(this, sensorManager)
     }
 
     override fun onResume() {
@@ -35,5 +35,17 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
 
     override fun onPause() {
         mSensorHandler.onPause()
+    }
+
+    override fun onChangeXAxis(newXValue : Float) {
+        mView?.setXValue(newXValue)
+    }
+
+    override fun onChangeYAxis(newYValue : Float) {
+        mView?.setYValue(newYValue)
+    }
+
+    override fun onChangeZAxis(newZValue : Float) {
+        mView?.setZValue(newZValue)
     }
 }

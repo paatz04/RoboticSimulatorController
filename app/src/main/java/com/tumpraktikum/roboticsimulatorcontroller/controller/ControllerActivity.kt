@@ -22,39 +22,41 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
         getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
 
-    var mSensorEventListener =  object : SensorEventListener {
-        override fun onAccuracyChanged(sensor : Sensor, accuracy : Int) {}
-
-        @SuppressLint("SetTextI18n")
-        override fun onSensorChanged(event : SensorEvent) {
-            val values = event.values
-            sensorX.text = "x: " + values[0]
-            sensorY.text = "y: " + values[1]
-            sensorZ.text = "z: " + values[2]
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controller)
 
         (application as App).appComponent.inject(this)
+        mPresenter.setSensorManager(mSensorManager)
     }
 
     override fun onResume() {
         super.onResume()
+        mPresenter.onResume()
         mPresenter.takeView(this)
-
-
     }
 
     override fun onPause() {
         super.onPause()
-
-        mSensorManager.unregisterListener(mSensorEventListener)
+        mPresenter.onPause()
     }
 
     override fun showEmptyView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setXValue(x: Float) {
+        sensorX.text = "x: " + x
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setYValue(y: Float) {
+        sensorY.text = "y: " + y
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setZValue(z: Float) {
+        sensorZ.text = "z: " + z
     }
 }
