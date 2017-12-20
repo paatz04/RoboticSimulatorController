@@ -3,9 +3,8 @@ package com.tumpraktikum.roboticsimulatorcontroller.controller.sensors
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
-import android.util.Log
 
-class GravitySensorEventListener(private var mSensorHandler: SensorHandler)
+class GravitySensorEventListener(private var mMotionDetector: MotionDetector)
     : SensorEventListener {
 
     private val xAxis: Int = 0
@@ -21,8 +20,8 @@ class GravitySensorEventListener(private var mSensorHandler: SensorHandler)
 
     override fun onSensorChanged(event : SensorEvent) {
         val values = event.values
-        if (values[xAxis] != mXValue) mSensorHandler.onChangeXAxis(values[xAxis])
-        if (values[yAxis] != mYValue) mSensorHandler.onChangeYAxis(values[yAxis])
-        if (values[zAxis] != mZValue) mSensorHandler.onChangeZAxis(values[zAxis])
+        if (values[xAxis] != mXValue) mMotionDetector.onChangeXAxis(values[xAxis])
+        if (values[yAxis] != mYValue) mMotionDetector.onChangeYAxis(values[yAxis])
+        if (values[zAxis] != mZValue) mMotionDetector.onChangeZAxis(values[zAxis])
     }
 }

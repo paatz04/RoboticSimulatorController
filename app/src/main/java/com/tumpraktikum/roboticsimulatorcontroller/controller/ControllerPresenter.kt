@@ -1,20 +1,33 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.hardware.SensorManager
-import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerSensorHandler
-import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.SensorHandler
+import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.ButtonManager
+import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButtonManager
+import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.enums.RobotControlButtons
+import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerMotionDetector
+import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import javax.inject.Inject
 
 class ControllerPresenter
 @Inject
 constructor(private val myBluetoothManager: MyBluetoothManager)
-    : ControllerContract.Presenter, CallerSensorHandler {
+    : ControllerContract.Presenter, CallerMotionDetector, CallerButtonManager{
+
 
 
     private var mView: ControllerContract.View? = null
-    private lateinit var mSensorHandler : SensorHandler
+    private lateinit var mMotionDetector: MotionDetector
+    private var mButtonManager : ButtonManager = ButtonManager(this)
 
+
+    override fun onResume() {
+        mMotionDetector.onResume()
+    }
+
+    override fun onPause() {
+        mMotionDetector.onPause()
+    }
 
     override fun takeView(view: ControllerContract.View) {
         mView = view
@@ -24,17 +37,9 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
         mView = null
     }
 
-    override fun setSensorManager(sensorManager: SensorManager) {
+    override fun setMotionDetector(sensorManager: SensorManager) {
         // TODO: realize with dagger
-        mSensorHandler = SensorHandler(this, sensorManager)
-    }
-
-    override fun onResume() {
-        mSensorHandler.onResume()
-    }
-
-    override fun onPause() {
-        mSensorHandler.onPause()
+        mMotionDetector = MotionDetector(this, sensorManager)
     }
 
     override fun onChangeXAxis(newXValue : Float) {
@@ -46,4 +51,25 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
     }
 
     override fun onChangeZAxis(newZValue: Float) { }
+
+    override fun onButtonClicked(clickedButton: RobotControlButtons) {
+        mButtonManager.onButtonClicked(clickedButton)
+    }
+
+    override fun onButtonReleased(releasedButton: RobotControlButtons) {
+        mButtonManager.onButtonReleased(releasedButton)
+    }
+
+    override fun onChangeTipValue(newTipValue: Float) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onGrab() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRelease() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }

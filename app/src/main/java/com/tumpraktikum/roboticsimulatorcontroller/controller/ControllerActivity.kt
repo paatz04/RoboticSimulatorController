@@ -24,7 +24,7 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
         setContentView(R.layout.activity_controller)
 
         (application as App).appComponent.inject(this)
-        mPresenter.setSensorManager(mSensorManager)
+        mPresenter.setMotionDetector(mSensorManager)
     }
 
     override fun onResume() {

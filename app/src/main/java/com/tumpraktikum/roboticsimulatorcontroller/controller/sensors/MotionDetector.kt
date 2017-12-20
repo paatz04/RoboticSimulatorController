@@ -2,7 +2,6 @@ package com.tumpraktikum.roboticsimulatorcontroller.controller.sensors
 
 import android.hardware.Sensor
 import android.hardware.SensorManager
-import android.util.Log
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -10,8 +9,8 @@ import kotlin.math.round
 /*
  * Handle the accurany of the sensors
  */
-class SensorHandler(private var mCaller : CallerSensorHandler,
-                    private var mSensorManager: SensorManager) {
+class MotionDetector(private var mCaller : CallerMotionDetector,
+                     private var mSensorManager: SensorManager) {
     private val xAtLeastAwayFromZero : Float = 1F
     private val xIntensitySteps : Float = 0.5F
     private val yAtLeastAwayFromZero : Float = 1F
