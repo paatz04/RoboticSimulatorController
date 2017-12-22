@@ -16,6 +16,7 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
 
     private var mView: ControllerContract.View? = null
     private lateinit var mMotionDetector: MotionDetector
+    // TODO: realize with dagger
     private var mButtonManager : ButtonManager = ButtonManager(this)
 
 

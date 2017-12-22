@@ -8,10 +8,6 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.Robo
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton.*
 
-/*
- * Sobald geklickt wird bekommt der Button/Robotorarm eine gewisse Geschwindikeit. Diese behält
- * er so lange, bis der button Wieder losgelassen wird
- */
 class ButtonManager(private  val caller : CallerButtonManager) {
 
     private val speedTip : Float = 3F
@@ -21,7 +17,6 @@ class ButtonManager(private  val caller : CallerButtonManager) {
     private var mStateRobotGrab: RobotGrabState = GRAB_PAUSED
 
     fun onButtonClicked(clickedButton : RobotControlButton) {
-        Log.d("ButtonManager", "onButtonClicked " + clickedButton)
         when (clickedButton) {
             TIP_UP -> onTipUpButtonClicked()
             TIP_DOWN -> onTipDownButtonClicked()
@@ -51,7 +46,6 @@ class ButtonManager(private  val caller : CallerButtonManager) {
     }
 
     fun onButtonReleased(releasedButton : RobotControlButton) {
-        Log.d("ButtonManager", "onButtonReleased " + releasedButton)
         when (releasedButton) {
             TIP_UP -> onTipUpButtonReleased()
             TIP_DOWN -> onTipDownButtonReleased()
