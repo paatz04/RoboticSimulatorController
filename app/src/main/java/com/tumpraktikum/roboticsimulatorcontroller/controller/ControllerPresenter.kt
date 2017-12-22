@@ -3,7 +3,7 @@ package com.tumpraktikum.roboticsimulatorcontroller.controller
 import android.hardware.SensorManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.ButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButtonManager
-import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.enums.RobotControlButtons
+import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerMotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
@@ -13,8 +13,6 @@ class ControllerPresenter
 @Inject
 constructor(private val myBluetoothManager: MyBluetoothManager)
     : ControllerContract.Presenter, CallerMotionDetector, CallerButtonManager{
-
-
 
     private var mView: ControllerContract.View? = null
     private lateinit var mMotionDetector: MotionDetector
@@ -52,24 +50,20 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
 
     override fun onChangeZAxis(newZValue: Float) { }
 
-    override fun onButtonClicked(clickedButton: RobotControlButtons) {
+    override fun onButtonClicked(clickedButton: RobotControlButton) {
         mButtonManager.onButtonClicked(clickedButton)
     }
 
-    override fun onButtonReleased(releasedButton: RobotControlButtons) {
+    override fun onButtonReleased(releasedButton: RobotControlButton) {
         mButtonManager.onButtonReleased(releasedButton)
     }
 
     override fun onChangeTipValue(newTipValue: Float) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mView?.setTip(newTipValue)
     }
 
-    override fun onGrab() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onRelease() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onChangeGrabValue(newGrabValue : Float) {
+        mView?.setGrab(newGrabValue)
     }
 
 }

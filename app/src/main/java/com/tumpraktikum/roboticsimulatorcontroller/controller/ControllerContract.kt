@@ -1,6 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 import android.hardware.SensorManager
-import com.tumpraktikum.roboticsimulatorcontroller.controller.helper.enums.RobotControlButtons
+import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.*
 
 interface ControllerContract {
@@ -9,13 +9,15 @@ interface ControllerContract {
         fun showEmptyView()
         fun setBody(value: Float)
         fun setRotation(value: Float)
+        fun setTip(value: Float)
+        fun setGrab(value: Float)
     }
 
     interface Presenter : BasePresenter<View> {
         fun onResume()
         fun onPause()
         fun setMotionDetector(sensorManager: SensorManager)
-        fun onButtonClicked(clickedButton : RobotControlButtons)
-        fun onButtonReleased(releasedButton : RobotControlButtons)
+        fun onButtonClicked(clickedButton : RobotControlButton)
+        fun onButtonReleased(releasedButton : RobotControlButton)
     }
 }

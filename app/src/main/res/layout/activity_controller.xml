@@ -11,32 +11,45 @@
         android:id="@+id/btnGrab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp"
-        android:text="@string/grab"/>
+        android:layout_alignBottom="@+id/btnRelease"
+        android:layout_alignLeft="@+id/btnRelease"
+        android:layout_alignStart="@+id/btnRelease"
+        android:layout_marginBottom="55dp"
+        android:text="@string/grab" />
+
+    <Button
+        android:id="@+id/btnRelease"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="256dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_toLeftOf="@+id/tvValueRotation"
+        android:layout_toStartOf="@+id/tvValueRotation"
+        android:text="@string/release" />
 
     <Button
         android:id="@+id/btnTipUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnGrab"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="65dp"
-        android:layout_marginRight="65dp"
-        android:text="@string/tipUp"/>
+        android:layout_alignBaseline="@+id/btnRelease"
+        android:layout_alignBottom="@+id/btnRelease"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/tvValueRotation"
+        android:layout_toRightOf="@+id/tvValueRotation"
+        android:text="@string/tipUp" />
 
     <Button
         android:id="@+id/btnTipDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnGrab"
+        android:layout_alignBottom="@+id/btnGrab"
         android:layout_alignLeft="@+id/btnTipUp"
         android:layout_alignStart="@+id/btnTipUp"
-        android:layout_below="@+id/btnGrab"
-        android:text="@string/tipDown"/>
+        android:text="@string/tipDown" />
 
     <TextView
         android:id="@+id/tvValueBody"
@@ -44,14 +57,34 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/btnTipUp"
         android:layout_centerHorizontal="true"
+        android:text="Body"
         android:textAlignment="center" />
 
     <TextView
         android:id="@+id/tvValueRotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvValueBody"
-        android:layout_alignStart="@+id/tvValueBody"
-        android:layout_alignTop="@+id/btnTipDown"
+        android:layout_alignBaseline="@+id/btnGrab"
+        android:layout_alignBottom="@+id/btnGrab"
+        android:layout_centerHorizontal="true"
+        android:text="Rotation"
         android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/tvValueTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnTipDown"
+        android:layout_centerHorizontal="true"
+        android:text="Tip" />
+
+    <TextView
+        android:id="@+id/tvValueGrab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvValueBody"
+        android:layout_marginTop="24dp"
+        android:layout_toEndOf="@+id/btnRelease"
+        android:layout_toRightOf="@+id/btnRelease"
+        android:text="Grab" />
 </RelativeLayout>
