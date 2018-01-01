@@ -12,6 +12,7 @@ interface MainContract {
     interface View : BaseView<Presenter> {
         fun showEmptyView()
         fun showBluetoothDevices()
+        fun showNotSupported()
         fun openControllerActivity()
         fun setAdapter()
     }

@@ -7,13 +7,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.application.App
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-
-
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnConnect.setOnClickListener{ openControllerActivity() }
+        btnTurnOnBluetooth.setOnClickListener { mPresenter.turnBluetoothOn(this) }
 
         (application as App).appComponent.inject(this)
 
@@ -32,17 +31,20 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         registerReceiver(mReceiver, filter)
     }
 
+
+
     // Create a BroadcastReceiver for ACTION_FOUND.
     private val mReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            mPresenter.bluetoothDeviceFound(context,intent)
+            mPresenter.bluetoothDeviceFound(context, intent)
         }
     }
 
     override fun onResume() {
         super.onResume()
         mPresenter.takeView(this)
+        mPresenter.checkIfBluetoothOn()
     }
 
     override fun onDestroy() {
@@ -55,17 +57,26 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         startActivity(intent)
     }
 
-    override fun showEmptyView() {
+    override fun showNotSupported() {
+        rlNotSupported.visibility = View.VISIBLE
+        rlEmptyView.visibility = View.GONE
+        rlList.visibility = View.GONE
+    }
 
+    override fun showEmptyView() {
+        rlNotSupported.visibility = View.GONE
+        rlEmptyView.visibility = View.VISIBLE
+        rlList.visibility = View.GONE
     }
 
     override fun showBluetoothDevices() {
-
+        rlNotSupported.visibility = View.GONE
+        rlEmptyView.visibility = View.GONE
+        rlList.visibility = View.VISIBLE
     }
 
     override fun setAdapter() {
-        listView.adapter = BluetoothListAdapter()
+        listView.adapter = BluetoothListAdapter(this)
     }
-
 
 }

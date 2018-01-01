@@ -15,6 +15,15 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
 
     override fun takeView(view: MainContract.View) {
         this.mView = view
+        if (myBluetoothManager.isBluetoothSupported()) {
+            if (myBluetoothManager.isBluetoothEnabled()) {
+                mView?.showBluetoothDevices()
+            }else
+                mView?.showEmptyView()
+        }else
+        {
+            mView?.showNotSupported()
+        }
     }
 
     override fun dropView() {
