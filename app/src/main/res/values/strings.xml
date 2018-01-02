@@ -8,4 +8,5 @@
     <string name="release">release</string>
     <string name="tipUp">tip up</string>
     <string name="tipDown">tip down</string>
+    <string name="bluetoothProblem">Something went wrong. Please turn on bluetooth in order to use this application</string>
 </resources>

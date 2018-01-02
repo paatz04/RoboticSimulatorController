@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.application.App
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
-
     // Create a BroadcastReceiver for ACTION_FOUND.
     private val mReceiver = object : BroadcastReceiver() {
 
@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onResume() {
         super.onResume()
         mPresenter.takeView(this)
-        mPresenter.checkIfBluetoothOn()
     }
 
     override fun onDestroy() {
@@ -77,6 +76,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun setAdapter() {
         listView.adapter = BluetoothListAdapter(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mPresenter.onActivityResult(requestCode,resultCode,data)
+    }
+
+    override fun showToast() {
+        Toast.makeText(this,getString(R.string.bluetoothProblem),Toast.LENGTH_LONG).show()
     }
 
 }

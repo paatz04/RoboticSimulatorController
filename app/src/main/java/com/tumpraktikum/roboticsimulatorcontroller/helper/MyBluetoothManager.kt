@@ -10,10 +10,13 @@ class MyBluetoothManager {
 
     private val mBluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
 
-    private var REQUEST_ENABLE_BT: Int = 1;
+    companion object {
+        val REQUEST_ENABLE_BT: Int = 1
+
+    }
 
     fun isBluetoothSupported(): Boolean {
-        return mBluetoothAdapter == null
+        return mBluetoothAdapter != null
     }
 
     fun isBluetoothEnabled(): Boolean {

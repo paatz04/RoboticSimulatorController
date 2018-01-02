@@ -16,12 +16,8 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
     override fun takeView(view: MainContract.View) {
         this.mView = view
         if (myBluetoothManager.isBluetoothSupported()) {
-            if (myBluetoothManager.isBluetoothEnabled()) {
-                mView?.showBluetoothDevices()
-            }else
-                mView?.showEmptyView()
-        }else
-        {
+            checkIfBluetoothOn()
+        } else {
             mView?.showNotSupported()
         }
     }
@@ -53,6 +49,17 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
             val deviceName = device.name
             val deviceHardwareAddress = device.address // MAC address
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MyBluetoothManager.REQUEST_ENABLE_BT && resultCode == -1 && data != null) {
+            // bluetooth turned on successfully
+            mView?.showBluetoothDevices()
+        }else
+        {
+            //something wen wrong with bluetooth intent
+            mView?.showToast()
         }
     }
 }

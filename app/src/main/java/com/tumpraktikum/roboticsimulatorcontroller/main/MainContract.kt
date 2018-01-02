@@ -15,6 +15,7 @@ interface MainContract {
         fun showNotSupported()
         fun openControllerActivity()
         fun setAdapter()
+        fun showToast()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -22,5 +23,6 @@ interface MainContract {
         fun turnBluetoothOn(context: AppCompatActivity)
         fun connectToDevice()
         fun bluetoothDeviceFound(context: Context, intent: Intent)
+        fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     }
 }
