@@ -14,19 +14,15 @@ import com.tumpraktikum.roboticsimulatorcontroller.R
  */
 class BluetoothListAdapter(context: Context) : BaseAdapter(){
 
-    var mItems :ArrayList<BluetoothDevice> = ArrayList()
+    private var mItems :ArrayList<BluetoothDevice> = ArrayList()
 
-    private val mInflator: LayoutInflater
-
-    init {
-        this.mInflator = LayoutInflater.from(context)
-    }
+    private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
         val vh: ListRowHolder
         if (convertView == null) {
-            view = this.mInflator.inflate(R.layout.list_row, parent, false)
+            view = this.mInflater.inflate(R.layout.list_row, parent, false)
             vh = ListRowHolder(view)
             view.tag = vh
         } else {
@@ -51,10 +47,7 @@ class BluetoothListAdapter(context: Context) : BaseAdapter(){
     }
 
     private class ListRowHolder(row: View?) {
-        public val label: TextView
+        val label: TextView = row?.findViewById(R.id.label) as TextView
 
-        init {
-            this.label = row?.findViewById(R.id.label) as TextView
-        }
     }
 }
