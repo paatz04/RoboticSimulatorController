@@ -12,9 +12,10 @@ import com.tumpraktikum.roboticsimulatorcontroller.R
 /**
  * Created by patriccorletto on 12/25/17.
  */
-class BluetoothListAdapter(context: Context) : BaseAdapter(){
+class BluetoothListAdapter(context: Context) : BaseAdapter( ){
 
     private var mItems :ArrayList<BluetoothDevice> = ArrayList()
+    private val mContext = context
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -32,6 +33,8 @@ class BluetoothListAdapter(context: Context) : BaseAdapter(){
 
         if(!mItems[position].name.isNullOrEmpty())
             vh.name.text = mItems[position].name
+        else
+            vh.name.text = mContext.getText(R.string.name_unavailable)
         vh.address.text = mItems[position].address
         return view
     }

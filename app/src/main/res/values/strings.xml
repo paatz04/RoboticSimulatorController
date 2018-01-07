@@ -10,4 +10,6 @@
     <string name="tipDown">tip down</string>
     <string name="bluetoothProblem">Something went wrong. Please turn on bluetooth in order to use this application</string>
     <string name="name_unavailable">Name unavailable</string>
+    <string name="paired_devices">Paired Devices</string>
+    <string name="other_devices">Other Devices</string>
 </resources>

@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun setAdapter() : BluetoothListAdapter {
         val adapter = BluetoothListAdapter(this)
-        listView.adapter = adapter
+        listViewOtherDevices.adapter = adapter
         return adapter
     }
 
