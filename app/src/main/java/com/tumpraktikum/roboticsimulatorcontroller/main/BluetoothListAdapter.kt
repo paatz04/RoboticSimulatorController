@@ -30,12 +30,18 @@ class BluetoothListAdapter(context: Context) : BaseAdapter(){
             vh = view.tag as ListRowHolder
         }
 
-        vh.label.text = mItems[position].name
+        if(!mItems[position].name.isNullOrEmpty())
+            vh.name.text = mItems[position].name
+        vh.address.text = mItems[position].address
         return view
     }
 
     override fun getItem(position: Int): Any {
         return mItems[position]
+    }
+
+    public fun setItems(items : ArrayList<BluetoothDevice>){
+        this.mItems = items
     }
 
     override fun getItemId(position: Int): Long {
@@ -47,7 +53,9 @@ class BluetoothListAdapter(context: Context) : BaseAdapter(){
     }
 
     private class ListRowHolder(row: View?) {
-        val label: TextView = row?.findViewById(R.id.label) as TextView
+        val name: TextView = row?.findViewById(R.id.name) as TextView
+        val address: TextView = row?.findViewById(R.id.address) as TextView
+
 
     }
 }

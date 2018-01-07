@@ -45,6 +45,11 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         mPresenter.onPause()
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.dropView()
+    }
     private fun onTouchGrab(motionEvent: MotionEvent): Boolean {
         if (motionEvent.action == MotionEvent.ACTION_DOWN)
             mPresenter.onButtonClicked(GRAB)

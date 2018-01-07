@@ -8,10 +8,17 @@ import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import javax.inject.Inject
 
 
+
+
 class MainPresenter @Inject constructor(private val myBluetoothManager: MyBluetoothManager) :
         MainContract.Presenter {
 
     private var mView: MainContract.View? = null
+    private var mAdapter: BluetoothListAdapter? = null
+
+
+    private var mItems :ArrayList<BluetoothDevice> = ArrayList()
+
 
     override fun takeView(view: MainContract.View) {
         this.mView = view
@@ -29,9 +36,24 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
     override fun checkIfBluetoothOn() {
         if (myBluetoothManager.isBluetoothEnabled()) {
             mView?.showBluetoothDevices()
+            mAdapter = mView?.setAdapter()
+            mAdapter?.setItems(mItems)
+            mAdapter?.notifyDataSetChanged()
         } else {
             mView?.showEmptyView()
         }
+    }
+
+    override fun startDiscovery(){
+        mItems.clear()
+        mAdapter?.setItems(mItems)
+        mAdapter?.notifyDataSetChanged()
+        myBluetoothManager.startDiscovery()
+    }
+
+    override fun cancelDiscovery()
+    {
+        myBluetoothManager.cancelDiscovery();
     }
 
     override fun turnBluetoothOn(context: AppCompatActivity) {
@@ -47,13 +69,17 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             // Discovery has found a device. Get the BluetoothDevice
             // object and its info from the Intent.
             val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            val deviceName = device.name
-            val deviceHardwareAddress = device.address // MAC address
+            if(!mItems.contains(device)) {
+                mItems.add(device)
+                mAdapter?.setItems(mItems)
+                mAdapter?.notifyDataSetChanged()
+            }
+
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == MyBluetoothManager.REQUEST_ENABLE_BT && resultCode == -1 && data != null) {
+        if (requestCode == MyBluetoothManager.REQUEST_ENABLE_BT && resultCode == -1) {
             // bluetooth turned on successfully
             mView?.showBluetoothDevices()
         }else
@@ -62,4 +88,6 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             mView?.showToast()
         }
     }
+
+
 }

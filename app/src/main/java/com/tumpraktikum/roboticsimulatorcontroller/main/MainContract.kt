@@ -14,7 +14,7 @@ interface MainContract {
         fun showBluetoothDevices()
         fun showNotSupported()
         fun openControllerActivity()
-        fun setAdapter()
+        fun setAdapter():BluetoothListAdapter
         fun showToast()
     }
 
@@ -24,5 +24,8 @@ interface MainContract {
         fun connectToDevice()
         fun bluetoothDeviceFound(context: Context, intent: Intent)
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+        fun startDiscovery()
+        fun cancelDiscovery()
+
     }
 }
