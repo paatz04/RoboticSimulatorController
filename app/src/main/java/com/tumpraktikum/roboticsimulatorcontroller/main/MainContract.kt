@@ -14,9 +14,9 @@ interface MainContract {
         fun showBluetoothDevices()
         fun showNotSupported()
         fun openControllerActivity()
-        fun setAdapter():BluetoothListAdapter
-        fun setPairedAdapter():BluetoothListAdapter
-        fun showToast()
+        fun setAdapter(): BluetoothListAdapter
+        fun setPairedAdapter(): BluetoothListAdapter
+        fun showToast(msg: String)
         fun setOtherListHeight()
         fun setPairedListHeight()
 
@@ -31,6 +31,7 @@ interface MainContract {
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun startDiscovery()
         fun cancelDiscovery()
+        fun onItemClick(position: Int, other: Boolean)
 
     }
 }

@@ -1,6 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.dagger
 
-import android.hardware.SensorManager
+import android.content.Context
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerPresenter
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import com.tumpraktikum.roboticsimulatorcontroller.main.MainPresenter
@@ -13,8 +13,8 @@ import javax.inject.Singleton
 class PresenterModule {
     @Provides
     @Singleton
-    fun provideMainPresenter(myBluetoothManager: MyBluetoothManager):
-            MainPresenter = MainPresenter(myBluetoothManager)
+    fun provideMainPresenter(myBluetoothManager: MyBluetoothManager,context: Context):
+            MainPresenter = MainPresenter(myBluetoothManager,context)
 
     @Provides
     @Singleton

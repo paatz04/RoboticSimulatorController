@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 class MyBluetoothManager {
 
     private val mBluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+    private var mBluetoothService: MyBluetoothService? = null
 
     companion object {
         val REQUEST_ENABLE_BT: Int = 1
@@ -26,17 +27,23 @@ class MyBluetoothManager {
     fun enableBluetooth(context: AppCompatActivity) {
         if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(context, enableBtIntent, REQUEST_ENABLE_BT,null)
+            startActivityForResult(context, enableBtIntent, REQUEST_ENABLE_BT, null)
         }
     }
 
-    fun startDiscovery()
-    {
+    fun setService(myBluetoothService: MyBluetoothService?) {
+        mBluetoothService = myBluetoothService
+    }
+
+    fun getService():MyBluetoothService? {
+        return mBluetoothService
+    }
+
+    fun startDiscovery() {
         mBluetoothAdapter?.startDiscovery()
     }
 
-    fun cancelDiscovery()
-    {
+    fun cancelDiscovery() {
         mBluetoothAdapter?.cancelDiscovery()
     }
 
@@ -46,6 +53,5 @@ class MyBluetoothManager {
         }
         return null
     }
-
 
 }

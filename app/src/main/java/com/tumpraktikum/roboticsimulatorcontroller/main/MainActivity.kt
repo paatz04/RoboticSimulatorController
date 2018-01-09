@@ -14,6 +14,7 @@ import android.text.Html
 import android.view.View
 import android.view.View.MeasureSpec
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import com.tumpraktikum.roboticsimulatorcontroller.R
@@ -21,10 +22,6 @@ import com.tumpraktikum.roboticsimulatorcontroller.application.App
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-
-
-
-
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -43,9 +40,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         registerReceiver(mReceiver, filter)
         askForPermission()
 
+        listViewOtherDevices.onItemClickListener = object : AdapterView.OnItemClickListener {
+            override fun onItemClick(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
+                mPresenter.onItemClick(i, true)
+            }
+        }
 
+        listViewPairedDevices.onItemClickListener = object : AdapterView.OnItemClickListener {
+            override fun onItemClick(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
+                mPresenter.onItemClick(i, false)
+            }
+        }
     }
-
 
     // Create a BroadcastReceiver for ACTION_FOUND.
     private val mReceiver = object : BroadcastReceiver() {
@@ -90,13 +96,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         rlList.visibility = View.VISIBLE
     }
 
-    override fun setAdapter() : BluetoothListAdapter {
+    override fun setAdapter(): BluetoothListAdapter {
         val adapter = BluetoothListAdapter(this)
         listViewOtherDevices.adapter = adapter
         return adapter
     }
 
-    override fun setPairedAdapter() : BluetoothListAdapter {
+    override fun setPairedAdapter(): BluetoothListAdapter {
         val adapter = BluetoothListAdapter(this)
         listViewPairedDevices.adapter = adapter
         return adapter
@@ -104,20 +110,19 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mPresenter.onActivityResult(requestCode,resultCode,data)
+        mPresenter.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun showToast() {
-        Toast.makeText(this,getString(R.string.bluetoothProblem),Toast.LENGTH_LONG).show()
+    override fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
-    fun askForPermission()
-    {
+    fun askForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  // Only ask for these permissions on runtime when running Android 6.0 or higher
             when (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 PackageManager.PERMISSION_DENIED -> (AlertDialog.Builder(this)
                         .setTitle("Runtime Permissions up ahead")
-                        .setMessage(Html.fromHtml("<p>To find nearby bluetooth devices please click \"Allow\" on the runtime permissions popup.</p>" + "<p>For more info see <a href=\"http://developer.android.com/about/versions/marshmallow/android-6.0-changes.html#behavior-hardware-id\">here</a>.</p>"))
+                        .setMessage(Html.fromHtml("<p>To find nearby bluetooth devices please click \"Allow\" on the runtime permissions popup.</p>"))
                         .setNeutralButton("Okay", DialogInterface.OnClickListener { _, _ ->
                             if (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(this,
@@ -133,15 +138,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-    override fun setPairedListHeight(){
+    override fun setPairedListHeight() {
         setListViewHeightBasedOnChildren(listViewPairedDevices)
 
     }
 
-    override fun setOtherListHeight(){
+    override fun setOtherListHeight() {
         setListViewHeightBasedOnChildren(listViewOtherDevices)
     }
-
 
     /**** Method for Setting the Height of the ListView dynamically.
      * Hack to fix the issue of not showing all the items of the ListView
