@@ -17,6 +17,10 @@ interface MainContract {
         fun setAdapter():BluetoothListAdapter
         fun setPairedAdapter():BluetoothListAdapter
         fun showToast()
+        fun setOtherListHeight()
+        fun setPairedListHeight()
+
+
     }
 
     interface Presenter : BasePresenter<View> {

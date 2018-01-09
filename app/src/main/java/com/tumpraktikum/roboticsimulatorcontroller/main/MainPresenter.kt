@@ -42,6 +42,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             mAdapter = mView?.setAdapter()
             mAdapter?.setItems(mItems)
             mAdapter?.notifyDataSetChanged()
+            mView?.setOtherListHeight()
 
             mPairedAdapter = mView?.setPairedAdapter()
             addPairedDevices()
@@ -54,6 +55,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         mItems.clear()
         mAdapter?.setItems(mItems)
         mAdapter?.notifyDataSetChanged()
+        mView?.setOtherListHeight()
         myBluetoothManager.startDiscovery()
     }
 
@@ -79,6 +81,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
                 mItems.add(device)
                 mAdapter?.setItems(mItems)
                 mAdapter?.notifyDataSetChanged()
+                mView?.setOtherListHeight()
             }
         }
     }
@@ -87,6 +90,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         if (requestCode == MyBluetoothManager.REQUEST_ENABLE_BT && resultCode == -1) {
             // bluetooth turned on successfully
             mView?.showBluetoothDevices()
+            checkIfBluetoothOn()
         }else
         {
             //something wen wrong with bluetooth intent
@@ -102,9 +106,6 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         myBluetoothManager.queryPairedDevices()?.forEach{ bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
         mPairedAdapter?.setItems(mPairedItems)
         mPairedAdapter?.notifyDataSetChanged()
-
+        mView?.setPairedListHeight()
     }
-
-
-
 }

@@ -12,12 +12,19 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.view.View
+import android.view.View.MeasureSpec
+import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.Toast
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.application.App
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
+
+
+
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -35,6 +42,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         registerReceiver(mReceiver, filter)
         askForPermission()
+
+
     }
 
 
@@ -122,5 +131,37 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
             }
         }
+    }
+
+    override fun setPairedListHeight(){
+        setListViewHeightBasedOnChildren(listViewPairedDevices)
+
+    }
+
+    override fun setOtherListHeight(){
+        setListViewHeightBasedOnChildren(listViewOtherDevices)
+    }
+
+
+    /**** Method for Setting the Height of the ListView dynamically.
+     * Hack to fix the issue of not showing all the items of the ListView
+     * when placed inside a ScrollView   */
+    fun setListViewHeightBasedOnChildren(listView: ListView) {
+        val listAdapter = listView.getAdapter() ?: return
+
+        val desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.UNSPECIFIED)
+        var totalHeight = 0
+        var view: View? = null
+        for (i in 0 until listAdapter.getCount()) {
+            view = listAdapter.getView(i, view, listView)
+            if (i == 0)
+                view!!.layoutParams = ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+            view!!.measure(desiredWidth, MeasureSpec.UNSPECIFIED)
+            totalHeight += view.measuredHeight
+        }
+        val params = listView.getLayoutParams()
+        params.height = totalHeight + listView.getDividerHeight() * (listAdapter.getCount() - 1)
+        listView.setLayoutParams(params)
     }
 }
