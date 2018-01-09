@@ -87,6 +87,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         return adapter
     }
 
+    override fun setPairedAdapter() : BluetoothListAdapter {
+        val adapter = BluetoothListAdapter(this)
+        listViewPairedDevices.adapter = adapter
+        return adapter
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         mPresenter.onActivityResult(requestCode,resultCode,data)

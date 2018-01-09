@@ -58,7 +58,6 @@ class BluetoothListAdapter(context: Context) : BaseAdapter( ){
     private class ListRowHolder(row: View?) {
         val name: TextView = row?.findViewById(R.id.name) as TextView
         val address: TextView = row?.findViewById(R.id.address) as TextView
-
-
     }
+
 }

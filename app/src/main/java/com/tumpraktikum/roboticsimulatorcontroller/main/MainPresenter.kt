@@ -15,9 +15,12 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
 
     private var mView: MainContract.View? = null
     private var mAdapter: BluetoothListAdapter? = null
+    private var mPairedAdapter: BluetoothListAdapter? = null
 
 
     private var mItems :ArrayList<BluetoothDevice> = ArrayList()
+    private var mPairedItems :ArrayList<BluetoothDevice> = ArrayList()
+
 
 
     override fun takeView(view: MainContract.View) {
@@ -39,6 +42,9 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             mAdapter = mView?.setAdapter()
             mAdapter?.setItems(mItems)
             mAdapter?.notifyDataSetChanged()
+
+            mPairedAdapter = mView?.setPairedAdapter()
+            addPairedDevices()
         } else {
             mView?.showEmptyView()
         }
@@ -74,7 +80,6 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
                 mAdapter?.setItems(mItems)
                 mAdapter?.notifyDataSetChanged()
             }
-
         }
     }
 
@@ -88,6 +93,18 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             mView?.showToast()
         }
     }
+
+    private fun addPairedDevices()
+    {
+        mPairedItems.clear()
+        mPairedAdapter?.setItems(mPairedItems)
+        mPairedAdapter?.notifyDataSetChanged()
+        myBluetoothManager.queryPairedDevices()?.forEach{ bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
+        mPairedAdapter?.setItems(mPairedItems)
+        mPairedAdapter?.notifyDataSetChanged()
+
+    }
+
 
 
 }

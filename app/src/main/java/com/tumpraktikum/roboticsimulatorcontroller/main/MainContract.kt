@@ -15,6 +15,7 @@ interface MainContract {
         fun showNotSupported()
         fun openControllerActivity()
         fun setAdapter():BluetoothListAdapter
+        fun setPairedAdapter():BluetoothListAdapter
         fun showToast()
     }
 
