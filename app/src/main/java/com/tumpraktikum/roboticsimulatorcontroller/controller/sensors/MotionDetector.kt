@@ -5,10 +5,6 @@ import android.hardware.SensorManager
 import kotlin.math.abs
 import kotlin.math.round
 
-
-/*
- * Handle the accurany of the sensors
- */
 class MotionDetector(private var mCaller : CallerMotionDetector,
                      private var mSensorManager: SensorManager) {
     private val xAtLeastAwayFromZero : Float = 1F

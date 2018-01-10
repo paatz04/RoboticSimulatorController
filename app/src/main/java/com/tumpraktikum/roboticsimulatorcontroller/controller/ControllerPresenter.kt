@@ -6,7 +6,7 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButt
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerMotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDetector
-import com.tumpraktikum.roboticsimulatorcontroller.controller.transfer.TransferDataFormatter
+import com.tumpraktikum.roboticsimulatorcontroller.controller.dataconverter.TransferDataConverter
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothService
 import javax.inject.Inject
@@ -50,12 +50,12 @@ constructor(mBluetoothManager: MyBluetoothManager)
 
     override fun onChangeXAxis(newXValue : Float) {
         mView?.setBody(newXValue)
-        mBluetoothService?.write(TransferDataFormatter.getStringForBody(newXValue))
+        mBluetoothService?.write(TransferDataConverter.getStringForBody(newXValue))
     }
 
     override fun onChangeYAxis(newYValue : Float) {
         mView?.setRotation(newYValue)
-        mBluetoothService?.write(TransferDataFormatter.getStringForRotation(newYValue))
+        mBluetoothService?.write(TransferDataConverter.getStringForRotation(newYValue))
     }
 
     override fun onChangeZAxis(newZValue: Float) { }
@@ -70,12 +70,12 @@ constructor(mBluetoothManager: MyBluetoothManager)
 
     override fun onChangeTipValue(newTipValue: Float) {
         mView?.setTip(newTipValue)
-        mBluetoothService?.write(TransferDataFormatter.getStringForTip(newTipValue))
+        mBluetoothService?.write(TransferDataConverter.getStringForTip(newTipValue))
     }
 
     override fun onChangeGrabValue(newGrabValue : Float) {
         mView?.setGrab(newGrabValue)
-        mBluetoothService?.write(TransferDataFormatter.getStringForGrab(newGrabValue))
+        mBluetoothService?.write(TransferDataConverter.getStringForGrab(newGrabValue))
     }
 
 }
