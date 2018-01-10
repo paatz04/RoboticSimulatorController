@@ -42,8 +42,12 @@ class MotionDetector(private var mCaller : CallerMotionDetector,
                 mXValue = roundedNewXValue
                 mCaller.onChangeXAxis(mXValue)
             }
-        }else
-            mCaller.onChangeXAxis(0F)
+        }else{
+            if (mXValue != 0F) {
+                mXValue = 0F
+                mCaller.onChangeXAxis(0F)
+            }
+        }
     }
     fun onChangeYAxis(newYValue: Float) {
         if (abs(newYValue) >= yAtLeastAwayFromZero) {
@@ -52,8 +56,12 @@ class MotionDetector(private var mCaller : CallerMotionDetector,
                 mYValue = roundedNewYValue
                 mCaller.onChangeYAxis(mYValue)
             }
-        }else
-            mCaller.onChangeYAxis(0F)
+        }else{
+            if (mYValue != 0F) {
+                mYValue = 0F
+                mCaller.onChangeYAxis(0F)
+            }
+        }
     }
     fun onChangeZAxis(newZValue: Float) {
         if (abs(newZValue) >= zAtLeastAwayFromZero) {
@@ -62,8 +70,12 @@ class MotionDetector(private var mCaller : CallerMotionDetector,
                 mZValue = roundedNewZValue
                 mCaller.onChangeZAxis(mZValue)
             }
-        }else
-            mCaller.onChangeZAxis(0F)
+        }else{
+            if (mYValue != 0F) {
+                mYValue = 0F
+                mCaller.onChangeZAxis(0F)
+            }
+        }
     }
 
     private fun roundForStepSize(value : Float, stepSize : Float): Float {

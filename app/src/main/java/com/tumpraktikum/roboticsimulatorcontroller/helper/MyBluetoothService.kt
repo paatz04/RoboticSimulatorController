@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
+import java.io.DataOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.io.OutputStream
 
 class MyBluetoothService(private var mHandler: Handler, private val mSocket: BluetoothSocket) {
     private var mConnectedThread: ConnectedThread? = null
-
-
 
     companion object {
         private val TAG = "MY_APP_DEBUG_TAG"
@@ -23,8 +21,8 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         mConnectedThread?.start()
     }
 
-    fun write(bytes: ByteArray) {
-        mConnectedThread?.write(bytes)
+    fun write(message: String) {
+        mConnectedThread?.write(message)
     }
 
     fun close() {
@@ -37,7 +35,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
     private inner class ConnectedThread : Thread() {
         private val mInStream: InputStream?
-        private val mOutStream: OutputStream?
+        private val mOutStream: DataOutputStream?
         private var mBuffer: ByteArray? = null
 
         init {
@@ -55,10 +53,10 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             return inputStream
         }
 
-        private fun getOutputStream(): OutputStream? {
-            var outputStream: OutputStream? = null
+        private fun getOutputStream(): DataOutputStream? {
+            var outputStream: DataOutputStream? = null
             try {
-                outputStream = mSocket.outputStream
+                outputStream = DataOutputStream(mSocket.outputStream)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating output stream", e)
             }
@@ -93,19 +91,19 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         // Call this from the main activity to send data to the remote device.
-        fun write(bytes: ByteArray) {
+        fun write(message: String) {
             try {
-                mOutStream!!.write(bytes)
-                sendSentMessageToActivity(bytes)
+                mOutStream!!.writeUTF(message)
+                sendSentMessageToActivity(message)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when sending data", e)
                 sendFailureMessageToActivity()
             }
         }
 
-        private fun sendSentMessageToActivity(bytes: ByteArray) {
+        private fun sendSentMessageToActivity(message: String) {
             val writtenMsg = mHandler.obtainMessage(
-                    MessageConstants.MESSAGE_WRITE, -1, -1, bytes)
+                    MessageConstants.MESSAGE_WRITE, -1, -1, message)
             writtenMsg.sendToTarget()
         }
 
