@@ -9,10 +9,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-/**
- * Created by patriccorletto on 1/9/18.
- */
-
 class MyBluetoothService(private var mHandler: Handler, private val mmSocket: BluetoothSocket) {
     private var mConnectedThread: ConnectedThread? = null
 
@@ -40,75 +36,85 @@ class MyBluetoothService(private var mHandler: Handler, private val mmSocket: Bl
     }
 
     private inner class ConnectedThread : Thread() {
-        private val mmInStream: InputStream?
-        private val mmOutStream: OutputStream?
-        private var mmBuffer: ByteArray? = null // mmBuffer store for the stream
+        private val mInStream: InputStream?
+        private val mOutStream: OutputStream?
+        private var mBuffer: ByteArray? = null
 
         init {
-            var tmpIn: InputStream? = null
-            var tmpOut: OutputStream? = null
+            mInStream = getInputStream()
+            mOutStream = getOutputStream()
+        }
 
-            // Get the input and output streams; using temp objects because
-            // member streams are final.
+        private fun getInputStream(): InputStream? {
+            var inputStream: InputStream? = null
             try {
-                tmpIn = mmSocket.inputStream
+                inputStream = mmSocket.inputStream
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating input stream", e)
             }
+            return inputStream
+        }
 
+        private fun getOutputStream(): OutputStream? {
+            var outputStream: OutputStream? = null
             try {
-                tmpOut = mmSocket.outputStream
+                outputStream = mmSocket.outputStream
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating output stream", e)
             }
-
-            mmInStream = tmpIn
-            mmOutStream = tmpOut
+            return outputStream
         }
 
         override fun run() {
-            mmBuffer = ByteArray(1024)
-            var numBytes: Int // bytes returned from read()
+            mBuffer = ByteArray(1024)
+            var numberReadBytes: Int
 
             // Keep listening to the InputStream until an exception occurs.
             while (true) {
                 try {
-                    // Read from the InputStream.
-                    numBytes = mmInStream!!.read(mmBuffer!!)
-                    // Send the obtained bytes to the UI activity.
-                    val readMsg = mHandler.obtainMessage(
-                            MessageConstants.MESSAGE_READ, numBytes, -1,
-                            mmBuffer)
-                    readMsg.sendToTarget()
+                    numberReadBytes = readFromInputStreamIntoBuffer()
+                    sendBufferToActivity(numberReadBytes)
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
                     break
                 }
-
             }
+        }
+
+        private fun readFromInputStreamIntoBuffer(): Int {
+            return mInStream!!.read(mBuffer)
+        }
+
+        private fun sendBufferToActivity(numberReadBytes: Int) {
+            val readMsg = mHandler.obtainMessage(
+                    MessageConstants.MESSAGE_READ, numberReadBytes, -1,
+                    mBuffer)
+            readMsg.sendToTarget()
         }
 
         // Call this from the main activity to send data to the remote device.
         fun write(bytes: ByteArray) {
             try {
-                mmOutStream!!.write(bytes)
-
-                // Share the sent message with the UI activity.
-                val writtenMsg = mHandler!!.obtainMessage(
-                        MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer)
-                writtenMsg.sendToTarget()
+                mOutStream!!.write(bytes)
+                sendSentMessageToActivity(bytes)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when sending data", e)
-
-                // Send a failure message back to the activity.
-                val writeErrorMsg = mHandler!!.obtainMessage(MessageConstants.MESSAGE_TOAST)
-                val bundle = Bundle()
-                bundle.putString("toast",
-                        "Couldn't send data to the other device")
-                writeErrorMsg.data = bundle
-                mHandler.sendMessage(writeErrorMsg)
+                sendFailureMessageToActivity()
             }
+        }
 
+        private fun sendSentMessageToActivity(bytes: ByteArray) {
+            val writtenMsg = mHandler.obtainMessage(
+                    MessageConstants.MESSAGE_WRITE, -1, -1, bytes)
+            writtenMsg.sendToTarget()
+        }
+
+        private fun sendFailureMessageToActivity() {
+            val writeErrorMsg = mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST)
+            val bundle = Bundle()
+            bundle.putString("toast", "Couldn't send data to the other device")
+            writeErrorMsg.data = bundle
+            mHandler.sendMessage(writeErrorMsg)
         }
 
         // Call this method from the main activity to shut down the connection.

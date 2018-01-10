@@ -48,9 +48,8 @@ class MyBluetoothManager {
     }
 
     fun queryPairedDevices(): Set<android.bluetooth.BluetoothDevice>? {
-        if (mBluetoothAdapter != null) {
+        if (mBluetoothAdapter != null)
             return mBluetoothAdapter.bondedDevices
-        }
         return null
     }
 

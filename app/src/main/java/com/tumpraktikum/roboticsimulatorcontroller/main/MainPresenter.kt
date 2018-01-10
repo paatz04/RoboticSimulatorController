@@ -23,7 +23,6 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
 
     private var mConnectThread: ConnectThread? = null
 
-
     private var mItems: ArrayList<BluetoothDevice> = ArrayList()
     private var mPairedItems: ArrayList<BluetoothDevice> = ArrayList()
 
@@ -104,15 +103,12 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
 
     override fun onItemClick(position: Int, other: Boolean) {
         val mHandler = Handler(Handler.Callback {
-
             message: Message? ->
             when (message?.what) {
                 MessageConstants.MESSAGE_SWITCH_ACTIVITY -> mView?.openControllerActivity()
-                MessageConstants.MESSAGE_TOAST -> mView?.showToast( message?.data?.getString("toast") ?: "message is null")
+                MessageConstants.MESSAGE_TOAST -> mView?.showToast( message.data?.getString("toast") ?: "message is null")
             }
             false
-
-
         })
         if (other) {
             Log.d("test", "Name: " + mItems[position].address)
