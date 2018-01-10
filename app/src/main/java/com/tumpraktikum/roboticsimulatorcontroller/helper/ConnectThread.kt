@@ -10,14 +10,14 @@ import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageCons
 import java.io.IOException
 import java.util.*
 
-class ConnectThread(private val mmDevice: BluetoothDevice, private val mBluetoothAdapter: MyBluetoothManager, private val mHandler : Handler) : Thread() {
+class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothAdapter: MyBluetoothManager, private val mHandler : Handler) : Thread() {
 
     private val MYUUID: UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb")
-    private val mmSocket: BluetoothSocket?
+    private val mSocket: BluetoothSocket?
     private var mBluetoothService: MyBluetoothService? = null
 
     init {
-         mmSocket = getBluetoothSocket()
+         mSocket = getBluetoothSocket()
     }
 
     private fun getBluetoothSocket() : BluetoothSocket? {
@@ -25,7 +25,7 @@ class ConnectThread(private val mmDevice: BluetoothDevice, private val mBluetoot
         try {
             // Get a BluetoothSocket to connect with the given BluetoothDevice.
             // MY_UUID is the app's UUID string, also used in the server code.
-            bluetoothSocket = mmDevice.createRfcommSocketToServiceRecord(MYUUID)
+            bluetoothSocket = mDevice.createRfcommSocketToServiceRecord(MYUUID)
         } catch (e: IOException) {
             Log.e(TAG, "Socket's create() method failed", e)
         }
@@ -39,13 +39,13 @@ class ConnectThread(private val mmDevice: BluetoothDevice, private val mBluetoot
         try {
             // Connect to the remote device through the socket. This call blocks
             // until it succeeds or throws an exception.
-            mmSocket!!.connect()
+            mSocket!!.connect()
         } catch (connectException: IOException) {
             closeBluetoothSocket()
             sendFailureMessageBackToActivity(connectException.localizedMessage)
             return
         }
-        mBluetoothService = MyBluetoothService(mHandler, mmSocket)
+        mBluetoothService = MyBluetoothService(mHandler, mSocket)
         mBluetoothAdapter.setService(mBluetoothService)
 
         sendSwitchActivityMessageBackToActivity()
@@ -53,7 +53,7 @@ class ConnectThread(private val mmDevice: BluetoothDevice, private val mBluetoot
 
     private fun closeBluetoothSocket() {
         try {
-            mmSocket!!.close()
+            mSocket!!.close()
         } catch (closeException: IOException) {
             Log.e(TAG, "Could not close the client socket", closeException)
         }
@@ -75,7 +75,7 @@ class ConnectThread(private val mmDevice: BluetoothDevice, private val mBluetoot
     // Closes the client socket and causes the thread to finish.
     fun cancel() {
         try {
-            mmSocket!!.close()
+            mSocket!!.close()
         } catch (e: IOException) {
             Log.e(TAG, "Could not close the client socket", e)
         }

@@ -7,25 +7,32 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.Robo
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerMotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
+import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothService
 import javax.inject.Inject
 
 class ControllerPresenter
 @Inject
-constructor(private val myBluetoothManager: MyBluetoothManager)
-    : ControllerContract.Presenter, CallerMotionDetector, CallerButtonManager{
+constructor(mBluetoothManager: MyBluetoothManager)
+    : ControllerContract.Presenter, CallerMotionDetector, CallerButtonManager {
 
     private var mView: ControllerContract.View? = null
+
     private lateinit var mMotionDetector: MotionDetector
-    // TODO: realize with dagger
     private var mButtonManager : ButtonManager = ButtonManager(this)
 
+    private var mBluetoothService: MyBluetoothService? = mBluetoothManager.getService()
 
-    override fun onResume() {
-        mMotionDetector.onResume()
+
+    override fun activateMotionDetector() {
+        mMotionDetector.activateSensorManager()
     }
 
-    override fun onPause() {
-        mMotionDetector.onPause()
+    override fun deactivateMotionDetector() {
+        mMotionDetector.deactivateSensorManager()
+    }
+
+    override fun cancelBluetoothService() {
+        mBluetoothService?.close()
     }
 
     override fun takeView(view: ControllerContract.View) {
@@ -37,7 +44,6 @@ constructor(private val myBluetoothManager: MyBluetoothManager)
     }
 
     override fun setMotionDetector(sensorManager: SensorManager) {
-        // TODO: realize with dagger
         mMotionDetector = MotionDetector(this, sensorManager)
     }
 

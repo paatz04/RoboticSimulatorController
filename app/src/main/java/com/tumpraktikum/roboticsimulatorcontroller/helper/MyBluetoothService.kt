@@ -9,7 +9,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-class MyBluetoothService(private var mHandler: Handler, private val mmSocket: BluetoothSocket) {
+class MyBluetoothService(private var mHandler: Handler, private val mSocket: BluetoothSocket) {
     private var mConnectedThread: ConnectedThread? = null
 
 
@@ -27,8 +27,8 @@ class MyBluetoothService(private var mHandler: Handler, private val mmSocket: Bl
         mConnectedThread?.write(bytes)
     }
 
-    fun cancel() {
-      mConnectedThread?.cancel()
+    fun close() {
+      mConnectedThread?.close()
     }
 
     fun updateHandler(handler: Handler){
@@ -48,7 +48,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mmSocket: Bl
         private fun getInputStream(): InputStream? {
             var inputStream: InputStream? = null
             try {
-                inputStream = mmSocket.inputStream
+                inputStream = mSocket.inputStream
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating input stream", e)
             }
@@ -58,7 +58,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mmSocket: Bl
         private fun getOutputStream(): OutputStream? {
             var outputStream: OutputStream? = null
             try {
-                outputStream = mmSocket.outputStream
+                outputStream = mSocket.outputStream
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating output stream", e)
             }
@@ -118,14 +118,35 @@ class MyBluetoothService(private var mHandler: Handler, private val mmSocket: Bl
         }
 
         // Call this method from the main activity to shut down the connection.
-        fun cancel() {
-            try {
-                mmSocket.close()
+        fun close() {
+            // ToDo connection did not close correctly. Read isn't interrupted
+            closeInputStream()
+            closeOutputStream()
+            closeSocket()
+        }
+
+        private fun closeInputStream() {
+            try{
+                mInStream?.close()
             } catch (e: IOException) {
-                Log.e(TAG, "Could not close the connect socket", e)
+                Log.e(TAG, "Could not close the InputStream", e)
+            }
+        }
+
+        private fun closeOutputStream() {
+            try{
+                mOutStream?.close()
+            } catch (e: IOException) {
+                Log.e(TAG, "Could not close the OutputStream", e)
+            }
+        }
+
+        private fun closeSocket() {
+            try{
+                mSocket.close()
+            } catch (e: IOException) {
+                Log.e(TAG, "Could not close the socket", e)
             }
         }
     }
-
-
 }

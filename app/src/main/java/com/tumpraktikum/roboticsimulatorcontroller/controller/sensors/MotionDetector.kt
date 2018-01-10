@@ -27,11 +27,11 @@ class MotionDetector(private var mCaller : CallerMotionDetector,
     private var mZValue: Float = 0F
 
 
-    fun onResume() {
+    fun activateSensorManager() {
         mSensorManager.registerListener(mGravitySensorEventListener, mGravitySensor, gravityIntensity)
     }
 
-    fun onPause() {
+    fun deactivateSensorManager() {
         mSensorManager.unregisterListener(mGravitySensorEventListener)
     }
 

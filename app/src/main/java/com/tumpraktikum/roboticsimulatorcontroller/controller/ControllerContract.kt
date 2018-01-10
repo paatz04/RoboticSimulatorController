@@ -14,8 +14,9 @@ interface ControllerContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun onResume()
-        fun onPause()
+        fun activateMotionDetector()
+        fun deactivateMotionDetector()
+        fun cancelBluetoothService()
         fun setMotionDetector(sensorManager: SensorManager)
         fun onButtonClicked(clickedButton : RobotControlButton)
         fun onButtonReleased(releasedButton : RobotControlButton)
