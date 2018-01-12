@@ -108,6 +108,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         private fun sendFailureMessageToActivity() {
+            // ToDo: return to the controller activity, because connection to the server closed
             val writeErrorMsg = mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST)
             val bundle = Bundle()
             bundle.putString("toast", "Couldn't send data to the other device")

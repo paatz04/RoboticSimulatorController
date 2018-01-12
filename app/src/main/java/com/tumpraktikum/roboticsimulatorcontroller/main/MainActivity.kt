@@ -40,17 +40,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         registerReceiver(mReceiver, filter)
         askForPermission()
 
-        listViewOtherDevices.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
-                mPresenter.onItemClick(i, true)
-            }
-        }
+        listViewOtherDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, false) }
 
-        listViewPairedDevices.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
-                mPresenter.onItemClick(i, false)
-            }
-        }
+        listViewPairedDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, true) }
     }
 
     // Create a BroadcastReceiver for ACTION_FOUND.
@@ -117,7 +109,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
-    fun askForPermission() {
+    private fun askForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  // Only ask for these permissions on runtime when running Android 6.0 or higher
             when (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 PackageManager.PERMISSION_DENIED -> (AlertDialog.Builder(this)
@@ -132,7 +124,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                         })
                         .show())
                 PackageManager.PERMISSION_GRANTED -> {
-                    mPresenter?.startDiscovery()
+                    mPresenter.startDiscovery()
                 }
             }
         }
@@ -150,13 +142,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     /**** Method for Setting the Height of the ListView dynamically.
      * Hack to fix the issue of not showing all the items of the ListView
      * when placed inside a ScrollView   */
-    fun setListViewHeightBasedOnChildren(listView: ListView) {
-        val listAdapter = listView.getAdapter() ?: return
+    private fun setListViewHeightBasedOnChildren(listView: ListView) {
+        val listAdapter = listView.adapter ?: return
 
-        val desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.UNSPECIFIED)
+        val desiredWidth = MeasureSpec.makeMeasureSpec(listView.width, MeasureSpec.UNSPECIFIED)
         var totalHeight = 0
         var view: View? = null
-        for (i in 0 until listAdapter.getCount()) {
+        for (i in 0 until listAdapter.count) {
             view = listAdapter.getView(i, view, listView)
             if (i == 0)
                 view!!.layoutParams = ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -164,8 +156,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             view!!.measure(desiredWidth, MeasureSpec.UNSPECIFIED)
             totalHeight += view.measuredHeight
         }
-        val params = listView.getLayoutParams()
-        params.height = totalHeight + listView.getDividerHeight() * (listAdapter.getCount() - 1)
-        listView.setLayoutParams(params)
+        val params = listView.layoutParams
+        params.height = totalHeight + listView.dividerHeight * (listAdapter.count - 1)
+        listView.layoutParams = params
     }
 }

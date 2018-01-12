@@ -31,7 +31,7 @@ interface MainContract {
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun startDiscovery()
         fun cancelDiscovery()
-        fun onItemClick(position: Int, other: Boolean)
+        fun onItemClick(position: Int, pairedDevice: Boolean)
 
     }
 }

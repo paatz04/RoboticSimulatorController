@@ -101,7 +101,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         }
     }
 
-    override fun onItemClick(position: Int, other: Boolean) {
+    override fun onItemClick(position: Int, pairedDevice: Boolean) {
         val mHandler = Handler(Handler.Callback {
             message: Message? ->
             when (message?.what) {
@@ -110,7 +110,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             }
             false
         })
-        if (other) {
+        if (pairedDevice) {
             Log.d("test", "Name: " + mItems[position].address)
             mConnectThread = ConnectThread(mItems[position], myBluetoothManager, mHandler)
         } else {
