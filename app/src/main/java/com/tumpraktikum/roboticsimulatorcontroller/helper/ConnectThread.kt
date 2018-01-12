@@ -14,7 +14,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
 
     private val MYUUID: UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb")
     private val mSocket: BluetoothSocket
-    private var mBluetoothService: MyBluetoothService? = null
+    private lateinit var mBluetoothService: MyBluetoothService
 
     init {
          mSocket = getBluetoothSocket()
@@ -53,7 +53,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
 
     private fun closeBluetoothSocket() {
         try {
-            mSocket!!.close()
+            mSocket.close()
         } catch (closeException: IOException) {
             Log.e(TAG, "Could not close the client socket", closeException)
         }
@@ -75,7 +75,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
     // Closes the client socket and causes the thread to finish.
     fun cancel() {
         try {
-            mSocket!!.close()
+            mSocket.close()
         } catch (e: IOException) {
             Log.e(TAG, "Could not close the client socket", e)
         }

@@ -24,6 +24,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
+/**
+ * ToDo: Noch eine Activity vor dieser einführen, in welcher kontrolliert wird, ob das Device überhaupt Bluetooth besitzt.
+ * Habe in MyBluetoothManager mBluetoothAdapter nullsafe gemacht. Falls das Gerät jedoch kein Bluetooth besitzt liefert
+ * BluetoothAdapter.getDefaultDevice() (Android Methode) null zurück. Ohne Bluetooth macht die gesamte App auch wenig Sinn
+ */
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     @Inject lateinit var mPresenter: MainPresenter
@@ -69,6 +74,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         startActivity(intent)
     }
 
+    // ToDo Delete, because isn't in use
     override fun showNotSupported() {
         rlNotSupported.visibility = View.VISIBLE
         rlEmptyView.visibility = View.GONE
@@ -109,6 +115,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     private fun askForPermission() {
+        // ToDo mit Hannes nochmal besprechen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  // Only ask for these permissions on runtime when running Android 6.0 or higher
             when (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 PackageManager.PERMISSION_DENIED -> (AlertDialog.Builder(this)

@@ -8,30 +8,26 @@ import android.support.v7.app.AppCompatActivity
 
 class MyBluetoothManager {
 
-    private val mBluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
-    private var mBluetoothService: MyBluetoothService? = null
+    private val mBluetoothAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+    private lateinit var mBluetoothService: MyBluetoothService
 
     companion object {
         val REQUEST_ENABLE_BT: Int = 1
 
     }
 
-    fun isBluetoothSupported(): Boolean {
-        return mBluetoothAdapter != null
-    }
-
     fun isBluetoothEnabled(): Boolean {
-        return mBluetoothAdapter != null && mBluetoothAdapter.isEnabled
+        return mBluetoothAdapter.isEnabled
     }
 
     fun enableBluetooth(context: AppCompatActivity) {
-        if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled) {
+        if (!isBluetoothEnabled()) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(context, enableBtIntent, REQUEST_ENABLE_BT, null)
         }
     }
 
-    fun setService(myBluetoothService: MyBluetoothService?) {
+    fun setService(myBluetoothService: MyBluetoothService) {
         mBluetoothService = myBluetoothService
     }
 
@@ -40,17 +36,15 @@ class MyBluetoothManager {
     }
 
     fun startDiscovery() {
-        mBluetoothAdapter?.startDiscovery()
+        mBluetoothAdapter.startDiscovery()
     }
 
     fun cancelDiscovery() {
-        mBluetoothAdapter?.cancelDiscovery()
+        mBluetoothAdapter.cancelDiscovery()
     }
 
-    fun queryPairedDevices(): Set<android.bluetooth.BluetoothDevice>? {
-        if (mBluetoothAdapter != null)
-            return mBluetoothAdapter.bondedDevices
-        return null
+    fun queryPairedDevices(): Set<android.bluetooth.BluetoothDevice> {
+        return mBluetoothAdapter.bondedDevices
     }
 
 }

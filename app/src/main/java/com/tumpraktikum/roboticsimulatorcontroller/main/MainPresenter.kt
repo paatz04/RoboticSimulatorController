@@ -33,11 +33,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
 
     override fun takeView(view: MainContract.View) {
         this.mView = view
-        if (myBluetoothManager.isBluetoothSupported()) {
-            checkIfBluetoothOn()
-        } else {
-            mView.showNotSupported()
-        }
+        checkIfBluetoothOn()
     }
 
     override fun setPermissionNearbyBluetoothDevices(permissionGranted: Boolean) {
@@ -114,6 +110,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         val mHandler = getHandler()
         try{
             mConnectThread = getConnectThread(position, pairedDevice, mHandler)
+            // ToDo Ladebalken anzeigen (Anderen devices sollten nicht mehr auswählbar sein, bis Antwort gekommen ist)
             mConnectThread.start()
         }catch (e: ConnectThreadException) {
             mView.showToast("Couldn't connect to the device")
@@ -145,7 +142,7 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         mPairedItems.clear()
         mPairedAdapter.setItems(mPairedItems)
         mPairedAdapter.notifyDataSetChanged()
-        myBluetoothManager.queryPairedDevices()?.forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
+        myBluetoothManager.queryPairedDevices().forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
         mPairedAdapter.setItems(mPairedItems)
         mPairedAdapter.notifyDataSetChanged()
         mView.setPairedListHeight()
