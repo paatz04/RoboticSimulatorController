@@ -13,23 +13,23 @@ import java.util.*
 class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothAdapter: MyBluetoothManager, private val mHandler : Handler) : Thread() {
 
     private val MYUUID: UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb")
-    private val mSocket: BluetoothSocket?
+    private val mSocket: BluetoothSocket
     private var mBluetoothService: MyBluetoothService? = null
 
     init {
          mSocket = getBluetoothSocket()
     }
 
-    private fun getBluetoothSocket() : BluetoothSocket? {
-        var bluetoothSocket: BluetoothSocket? = null
+    @Throws(ConnectThreadException::class)
+    private fun getBluetoothSocket() : BluetoothSocket {
         try {
             // Get a BluetoothSocket to connect with the given BluetoothDevice.
             // MY_UUID is the app's UUID string, also used in the server code.
-            bluetoothSocket = mDevice.createRfcommSocketToServiceRecord(MYUUID)
+            return mDevice.createRfcommSocketToServiceRecord(MYUUID)
         } catch (e: IOException) {
             Log.e(TAG, "Socket's create() method failed", e)
+            throw ConnectThreadException("Socket's create() method failed")
         }
-        return bluetoothSocket
     }
 
     override fun run() {
@@ -39,7 +39,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
         try {
             // Connect to the remote device through the socket. This call blocks
             // until it succeeds or throws an exception.
-            mSocket!!.connect()
+            mSocket.connect()
         } catch (connectException: IOException) {
             closeBluetoothSocket()
             sendFailureMessageBackToActivity(connectException.localizedMessage)

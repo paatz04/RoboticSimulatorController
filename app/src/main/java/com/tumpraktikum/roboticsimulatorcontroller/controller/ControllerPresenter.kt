@@ -40,10 +40,6 @@ constructor(mBluetoothManager: MyBluetoothManager)
         mView = view
     }
 
-    override fun dropView() {
-        mView = null
-    }
-
     override fun setMotionDetector(sensorManager: SensorManager) {
         mMotionDetector = MotionDetector(this, sensorManager)
     }

@@ -9,9 +9,6 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.tumpraktikum.roboticsimulatorcontroller.R
 
-/**
- * Created by patriccorletto on 12/25/17.
- */
 class BluetoothListAdapter(context: Context) : BaseAdapter( ){
 
     private var mItems :ArrayList<BluetoothDevice> = ArrayList()

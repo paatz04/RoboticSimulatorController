@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         askForPermission()
 
         listViewOtherDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, false) }
-
         listViewPairedDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, true) }
     }
 
@@ -56,13 +55,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onResume() {
         super.onResume()
         mPresenter.takeView(this)
+        mPresenter.startDiscovery()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(mReceiver)
         mPresenter.cancelDiscovery()
-        mPresenter.dropView()
     }
 
     override fun openControllerActivity() {
@@ -124,7 +123,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                         })
                         .show())
                 PackageManager.PERMISSION_GRANTED -> {
-                    mPresenter.startDiscovery()
+                    mPresenter.setPermissionNearbyBluetoothDevices(true)
                 }
             }
         }

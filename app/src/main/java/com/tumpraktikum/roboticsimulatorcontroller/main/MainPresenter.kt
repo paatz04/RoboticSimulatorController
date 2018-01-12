@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.helper.ConnectThread
+import com.tumpraktikum.roboticsimulatorcontroller.helper.ConnectThreadException
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
 import javax.inject.Inject
@@ -17,11 +18,14 @@ import javax.inject.Inject
 class MainPresenter @Inject constructor(private val myBluetoothManager: MyBluetoothManager, private val mContext:Context) :
         MainContract.Presenter {
 
-    private var mView: MainContract.View? = null
-    private var mAdapter: BluetoothListAdapter? = null
-    private var mPairedAdapter: BluetoothListAdapter? = null
+    private lateinit var mView: MainContract.View
 
-    private var mConnectThread: ConnectThread? = null
+
+    private var mPermissionNearbyBluetoothDevices: Boolean = false
+    private lateinit var mConnectThread: ConnectThread
+
+    private lateinit var mAdapter: BluetoothListAdapter
+    private lateinit var mPairedAdapter: BluetoothListAdapter
 
     private var mItems: ArrayList<BluetoothDevice> = ArrayList()
     private var mPairedItems: ArrayList<BluetoothDevice> = ArrayList()
@@ -32,39 +36,44 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         if (myBluetoothManager.isBluetoothSupported()) {
             checkIfBluetoothOn()
         } else {
-            mView?.showNotSupported()
+            mView.showNotSupported()
         }
     }
 
-    override fun dropView() {
-        this.mView = null
+    override fun setPermissionNearbyBluetoothDevices(permissionGranted: Boolean) {
+        // ToDo: Only for not paired devices, or for all devices?
+        mPermissionNearbyBluetoothDevices = permissionGranted
     }
 
     override fun checkIfBluetoothOn() {
         if (myBluetoothManager.isBluetoothEnabled()) {
-            mView?.showBluetoothDevices()
-            mAdapter = mView?.setAdapter()
-            mAdapter?.setItems(mItems)
-            mAdapter?.notifyDataSetChanged()
-            mView?.setOtherListHeight()
+            mView.showBluetoothDevices()
+            mAdapter = mView.setAdapter()
+            mAdapter.setItems(mItems)
+            mAdapter.notifyDataSetChanged()
+            mView.setOtherListHeight()
 
-            mPairedAdapter = mView?.setPairedAdapter()
+            mPairedAdapter = mView.setPairedAdapter()
             addPairedDevices()
         } else {
-            mView?.showEmptyView()
+            mView.showEmptyView()
         }
     }
 
     override fun startDiscovery() {
-        mItems.clear()
-        mAdapter?.setItems(mItems)
-        mAdapter?.notifyDataSetChanged()
-        mView?.setOtherListHeight()
-        myBluetoothManager.startDiscovery()
+        if (mPermissionNearbyBluetoothDevices) {
+            mItems.clear()
+            mAdapter.setItems(mItems)
+            mAdapter.notifyDataSetChanged()
+            mView.setOtherListHeight()
+            myBluetoothManager.startDiscovery()
+        }else{
+            mView.showToast("Permission not granted!")
+        }
     }
 
     override fun cancelDiscovery() {
-        myBluetoothManager.cancelDiscovery();
+        myBluetoothManager.cancelDiscovery()
     }
 
     override fun turnBluetoothOn(context: AppCompatActivity) {
@@ -82,9 +91,9 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
             if (!mItems.contains(device)) {
                 mItems.add(device)
-                mAdapter?.setItems(mItems)
-                mAdapter?.notifyDataSetChanged()
-                mView?.setOtherListHeight()
+                mAdapter.setItems(mItems)
+                mAdapter.notifyDataSetChanged()
+                mView.setOtherListHeight()
             }
         }
     }
@@ -93,40 +102,52 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
         if (requestCode == MyBluetoothManager.REQUEST_ENABLE_BT && resultCode == -1) {
             // bluetooth turned on successfully
             startDiscovery()
-            mView?.showBluetoothDevices()
+            mView.showBluetoothDevices()
             checkIfBluetoothOn()
         } else {
             //something wen wrong with bluetooth intent
-            mView?.showToast(mContext.getString(R.string.bluetoothProblem))
+            mView.showToast(mContext.getString(R.string.bluetoothProblem))
         }
     }
 
     override fun onItemClick(position: Int, pairedDevice: Boolean) {
-        val mHandler = Handler(Handler.Callback {
+        val mHandler = getHandler()
+        try{
+            mConnectThread = getConnectThread(position, pairedDevice, mHandler)
+            mConnectThread.start()
+        }catch (e: ConnectThreadException) {
+            mView.showToast("Couldn't connect to the device")
+        }
+    }
+
+    private fun getHandler() : Handler{
+        return Handler(Handler.Callback {
             message: Message? ->
             when (message?.what) {
-                MessageConstants.MESSAGE_SWITCH_ACTIVITY -> mView?.openControllerActivity()
-                MessageConstants.MESSAGE_TOAST -> mView?.showToast( message.data?.getString("toast") ?: "message is null")
+                MessageConstants.MESSAGE_SWITCH_ACTIVITY -> mView.openControllerActivity()
+                MessageConstants.MESSAGE_TOAST -> mView.showToast( message.data?.getString("toast") ?: "message is null")
             }
             false
         })
-        if (pairedDevice) {
-            Log.d("test", "Name: " + mItems[position].address)
-            mConnectThread = ConnectThread(mItems[position], myBluetoothManager, mHandler)
-        } else {
+    }
+
+    private fun getConnectThread(position: Int, pairedDevice: Boolean, mHandler: Handler): ConnectThread {
+        return if (pairedDevice) {
             Log.d("test", "Name: " + mPairedItems[position].address)
-            mConnectThread = ConnectThread(mPairedItems[position], myBluetoothManager, mHandler)
+            ConnectThread(mPairedItems[position], myBluetoothManager, mHandler)
+        } else {
+            Log.d("test", "Name: " + mItems[position].address)
+            ConnectThread(mItems[position], myBluetoothManager, mHandler)
         }
-        mConnectThread?.start()
     }
 
     private fun addPairedDevices() {
         mPairedItems.clear()
-        mPairedAdapter?.setItems(mPairedItems)
-        mPairedAdapter?.notifyDataSetChanged()
+        mPairedAdapter.setItems(mPairedItems)
+        mPairedAdapter.notifyDataSetChanged()
         myBluetoothManager.queryPairedDevices()?.forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
-        mPairedAdapter?.setItems(mPairedItems)
-        mPairedAdapter?.notifyDataSetChanged()
-        mView?.setPairedListHeight()
+        mPairedAdapter.setItems(mPairedItems)
+        mPairedAdapter.notifyDataSetChanged()
+        mView.setPairedListHeight()
     }
 }
