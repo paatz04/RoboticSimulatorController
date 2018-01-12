@@ -16,12 +16,12 @@ class ControllerPresenter
 constructor(mBluetoothManager: MyBluetoothManager)
     : ControllerContract.Presenter, CallerMotionDetector, CallerButtonManager {
 
-    private var mView: ControllerContract.View? = null
+    private lateinit var mView: ControllerContract.View
 
     private lateinit var mMotionDetector: MotionDetector
     private var mButtonManager : ButtonManager = ButtonManager(this)
 
-    private var mBluetoothService: MyBluetoothService? = mBluetoothManager.getService()
+    private var mBluetoothService: MyBluetoothService = mBluetoothManager.getService()
 
 
     override fun activateMotionDetector() {
@@ -33,7 +33,7 @@ constructor(mBluetoothManager: MyBluetoothManager)
     }
 
     override fun cancelBluetoothService() {
-        mBluetoothService?.close()
+        mBluetoothService.close()
     }
 
     override fun takeView(view: ControllerContract.View) {
@@ -65,13 +65,13 @@ constructor(mBluetoothManager: MyBluetoothManager)
     }
 
     override fun onChangeTipValue(newTipValue: Float) {
-        mView?.setTip(newTipValue)
-        mBluetoothService?.write(TransferDataConverter.getStringForTip(newTipValue))
+        mView.setTip(newTipValue)
+        mBluetoothService.write(TransferDataConverter.getStringForTip(newTipValue))
     }
 
     override fun onChangeGrabValue(newGrabValue : Float) {
-        mView?.setGrab(newGrabValue)
-        mBluetoothService?.write(TransferDataConverter.getStringForGrab(newGrabValue))
+        mView.setGrab(newGrabValue)
+        mBluetoothService.write(TransferDataConverter.getStringForGrab(newGrabValue))
     }
 
 }

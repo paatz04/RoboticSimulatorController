@@ -10,7 +10,7 @@ import java.io.IOException
 import java.io.InputStream
 
 class MyBluetoothService(private var mHandler: Handler, private val mSocket: BluetoothSocket) {
-    private var mConnectedThread: ConnectedThread? = null
+    private var mConnectedThread: ConnectedThread
 
     companion object {
         private val TAG = "MY_APP_DEBUG_TAG"
@@ -18,49 +18,55 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
     init {
         mConnectedThread = ConnectedThread()
-        mConnectedThread?.start()
+        mConnectedThread.start()
     }
 
     fun write(message: String) {
-        mConnectedThread?.write(message)
+        mConnectedThread.write(message)
     }
 
     fun close() {
-      mConnectedThread?.close()
+      mConnectedThread.close()
     }
 
     fun updateHandler(handler: Handler){
         this.mHandler = handler
     }
 
+
     private inner class ConnectedThread : Thread() {
-        private val mInStream: InputStream?
-        private val mOutStream: DataOutputStream?
+
+        private val mInStream: InputStream
+        private val mOutStream: DataOutputStream
         private var mBuffer: ByteArray? = null
 
         init {
-            mInStream = getInputStream()
-            mOutStream = getOutputStream()
+            try {
+                mInStream = getInputStream()
+                mOutStream = getOutputStream()
+            }catch (e: IOException) {
+                throw MyBluetoothServiceException(e.message ?: "Error occured when creating input/output stream")
+            }
         }
 
-        private fun getInputStream(): InputStream? {
-            var inputStream: InputStream? = null
+        @Throws(IOException::class)
+        private fun getInputStream(): InputStream {
             try {
-                inputStream = mSocket.inputStream
+                return mSocket.inputStream
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating input stream", e)
+                throw IOException("Error occurred when creating input stream", e)
             }
-            return inputStream
         }
 
-        private fun getOutputStream(): DataOutputStream? {
-            var outputStream: DataOutputStream? = null
+        @Throws(IOException::class)
+        private fun getOutputStream(): DataOutputStream {
             try {
-                outputStream = DataOutputStream(mSocket.outputStream)
+                return DataOutputStream(mSocket.outputStream)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating output stream", e)
+                throw IOException("Error occurred when creating output stream", e)
             }
-            return outputStream
         }
 
         override fun run() {
@@ -74,13 +80,14 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
                     sendBufferToActivity(numberReadBytes)
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
+                    // ToDo close everything and return to the MainActivity
                     break
                 }
             }
         }
 
         private fun readFromInputStreamIntoBuffer(): Int {
-            return mInStream!!.read(mBuffer)
+            return mInStream.read(mBuffer)
         }
 
         private fun sendBufferToActivity(numberReadBytes: Int) {
@@ -93,7 +100,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         // Call this from the main activity to send data to the remote device.
         fun write(message: String) {
             try {
-                mOutStream!!.writeUTF(message)
+                mOutStream.writeUTF(message)
                 sendSentMessageToActivity(message)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when sending data", e)
@@ -126,7 +133,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
         private fun closeInputStream() {
             try{
-                mInStream?.close()
+                mInStream.close()
             } catch (e: IOException) {
                 Log.e(TAG, "Could not close the InputStream", e)
             }
@@ -134,7 +141,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
         private fun closeOutputStream() {
             try{
-                mOutStream?.close()
+                mOutStream.close()
             } catch (e: IOException) {
                 Log.e(TAG, "Could not close the OutputStream", e)
             }

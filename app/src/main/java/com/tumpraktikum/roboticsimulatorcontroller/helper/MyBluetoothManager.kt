@@ -31,7 +31,7 @@ class MyBluetoothManager {
         mBluetoothService = myBluetoothService
     }
 
-    fun getService():MyBluetoothService? {
+    fun getService():MyBluetoothService {
         return mBluetoothService
     }
 

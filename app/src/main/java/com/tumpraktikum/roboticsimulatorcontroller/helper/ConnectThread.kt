@@ -46,7 +46,11 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
             return
         }
         mBluetoothService = MyBluetoothService(mHandler, mSocket)
-        mBluetoothAdapter.setService(mBluetoothService)
+        try {
+            mBluetoothAdapter.setService(mBluetoothService)
+        }catch (e: MyBluetoothServiceException) {
+
+        }
 
         sendSwitchActivityMessageBackToActivity()
     }
