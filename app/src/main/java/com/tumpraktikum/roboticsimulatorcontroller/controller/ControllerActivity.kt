@@ -37,9 +37,9 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
 
     override fun onResume() {
         super.onResume()
-        mPresenter.takeView(this)
         mPresenter.updateBluetoothHandler()
         mPresenter.activateMotionDetector()
+        mPresenter.takeView(this)
     }
 
     override fun onPause() {
@@ -51,7 +51,6 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         super.onDestroy()
         mPresenter.cancelBluetoothService()
     }
-
     private fun onTouchGrab(motionEvent: MotionEvent): Boolean {
         if (motionEvent.action == MotionEvent.ACTION_DOWN)
             mPresenter.onButtonClicked(GRAB)

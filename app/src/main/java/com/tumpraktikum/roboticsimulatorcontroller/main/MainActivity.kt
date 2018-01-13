@@ -1,6 +1,7 @@
 package com.tumpraktikum.roboticsimulatorcontroller.main
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.*
 import android.content.pm.PackageManager
@@ -24,11 +25,6 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-
-
-
-
-
 /**
  * ToDo: Noch eine Activity vor dieser einführen, in welcher kontrolliert wird, ob das Device überhaupt Bluetooth besitzt.
  * Habe in MyBluetoothManager mBluetoothAdapter nullsafe gemacht. Falls das Gerät jedoch kein Bluetooth besitzt liefert
@@ -38,22 +34,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     @Inject lateinit var mPresenter: MainPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        btnTurnOnBluetooth.setOnClickListener { mPresenter.turnBluetoothOn(this) }
-
-        (application as App).appComponent.inject(this)
-
-        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        registerReceiver(mReceiver, filter)
-        askForPermission()
-
-        listViewOtherDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, false) }
-        listViewPairedDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, true) }
-    }
-
     // Create a BroadcastReceiver for ACTION_FOUND.
     private val mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -61,15 +41,42 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        if (isBluetoothAvailable()) {
+            btnTurnOnBluetooth.setOnClickListener { mPresenter.turnBluetoothOn(this) }
+
+            (application as App).appComponent.inject(this)
+
+            val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+            registerReceiver(mReceiver, filter)
+            askForPermission()
+
+            listViewOtherDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, false) }
+            listViewPairedDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, true) }
+        }else{
+            showNotSupported()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        mPresenter.takeView(this)
+        if (isBluetoothAvailable())
+            mPresenter.takeView(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(mReceiver)
-        mPresenter.cancelDiscovery()
+        if (isBluetoothAvailable()) {
+            unregisterReceiver(mReceiver)
+            mPresenter.cancelDiscovery()
+        }
+    }
+
+    private fun isBluetoothAvailable(): Boolean {
+        return BluetoothAdapter.getDefaultAdapter() != null
     }
 
     override fun openControllerActivity() {
@@ -77,7 +84,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         startActivity(intent)
     }
 
-    // ToDo Delete, because isn't in use (move to the start activity, which must be created)
     override fun showNotSupported() {
         invisibleAllViews()
         rlNotSupported.visibility = View.VISIBLE
