@@ -13,7 +13,7 @@ internal interface MessageConstants {
         val MESSAGE_TOAST = 2
         val MESSAGE_SWITCH_ACTIVITY = 3
         val MESSAGE_BLUETOOTH_CONNECTION_CLOSED = 4
-
+        val MESSAGE_ERROR_BLUETOOTH_CONNECTION = 5
     }
 
 }

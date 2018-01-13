@@ -125,7 +125,6 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         fun close() {
-            // ToDo connection did not close correctly. Read isn't interrupted
             closeInputStream()
             closeOutputStream()
             closeSocket()

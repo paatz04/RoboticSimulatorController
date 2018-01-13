@@ -118,14 +118,14 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
     }
 
     override fun onItemClick(position: Int, pairedDevice: Boolean) {
+        mView.showLoading()
         val mHandler = getHandler()
         try{
             mConnectThread = getConnectThread(position, pairedDevice, mHandler)
-            // ToDo Ladebalken anzeigen (Anderen devices sollten nicht mehr auswählbar sein, bis Antwort gekommen ist)
-            mConnectThread.start()
         }catch (e: ConnectThreadException) {
-            mView.showToast("Couldn't connect to the device")
+            handleConnectionError()
         }
+        mConnectThread.start()
     }
 
     private fun getHandler() : Handler{
@@ -134,6 +134,7 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
             when (message?.what) {
                 MessageConstants.MESSAGE_SWITCH_ACTIVITY -> mView.openControllerActivity()
                 MessageConstants.MESSAGE_TOAST -> mView.showToast( message.data?.getString("toast") ?: "message is null")
+                MessageConstants.MESSAGE_ERROR_BLUETOOTH_CONNECTION -> handleConnectionError()
             }
             false
         })
@@ -147,5 +148,10 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
             Log.d("test", "Name: " + mItems[position].address)
             ConnectThread(mItems[position], mBluetoothmanager, mHandler)
         }
+    }
+
+    private fun handleConnectionError() {
+        mView.showBluetoothDevices()
+        mView.showToast("Couldn't connect to the device")
     }
 }

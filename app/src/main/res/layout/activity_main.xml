@@ -137,4 +137,20 @@
             android:text="@string/bluetoothNotAvailable"
             android:textAlignment="center"/>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:max="100"
+            android:layout_marginTop="-7dp"/>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

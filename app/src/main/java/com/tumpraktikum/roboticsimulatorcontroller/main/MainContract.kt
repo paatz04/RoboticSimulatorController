@@ -13,6 +13,7 @@ interface MainContract {
         fun showEmptyView()
         fun showBluetoothDevices()
         fun showNotSupported()
+        fun showLoading()
         fun openControllerActivity()
         fun setAdapter(): BluetoothListAdapter
         fun setPairedAdapter(): BluetoothListAdapter

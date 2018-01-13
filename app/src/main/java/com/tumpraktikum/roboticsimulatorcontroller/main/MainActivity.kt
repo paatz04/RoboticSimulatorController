@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.view.View
 import android.view.View.MeasureSpec
+import android.view.View.VIEW_LOG_TAG
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
@@ -22,6 +23,10 @@ import com.tumpraktikum.roboticsimulatorcontroller.application.App
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
+
+
+
 
 
 /**
@@ -74,21 +79,30 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     // ToDo Delete, because isn't in use (move to the start activity, which must be created)
     override fun showNotSupported() {
+        invisibleAllViews()
         rlNotSupported.visibility = View.VISIBLE
-        rlEmptyView.visibility = View.GONE
-        rlList.visibility = View.GONE
     }
 
     override fun showEmptyView() {
-        rlNotSupported.visibility = View.GONE
+        invisibleAllViews()
         rlEmptyView.visibility = View.VISIBLE
-        rlList.visibility = View.GONE
     }
 
     override fun showBluetoothDevices() {
+        invisibleAllViews()
+        rlList.visibility = View.VISIBLE
+    }
+
+    override fun showLoading() {
+        invisibleAllViews()
+        rlLoading.visibility = View.VISIBLE
+    }
+
+    private fun invisibleAllViews() {
         rlNotSupported.visibility = View.GONE
         rlEmptyView.visibility = View.GONE
-        rlList.visibility = View.VISIBLE
+        rlList.visibility = View.GONE
+        rlLoading.visibility = View.GONE
     }
 
     override fun setAdapter(): BluetoothListAdapter {

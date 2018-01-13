@@ -43,7 +43,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
         } catch (connectException: IOException) {
             closeBluetoothSocket()
             mBluetoothManager.startDiscovery()
-            sendFailureMessageBackToActivity(connectException.localizedMessage)
+            sendErrorBluetoothConnectionToActivity(connectException.localizedMessage)
             return
         }
         mBluetoothService = MyBluetoothService(mHandler, mSocket)
@@ -60,11 +60,8 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
         }
     }
 
-    private fun sendFailureMessageBackToActivity(message: String) {
-        val writeErrorMsg = mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST)
-        val bundle = Bundle()
-        bundle.putString("toast", "Error connecting: " + message)
-        writeErrorMsg.data = bundle
+    private fun sendErrorBluetoothConnectionToActivity(message: String) {
+        val writeErrorMsg = mHandler.obtainMessage(MessageConstants.MESSAGE_ERROR_BLUETOOTH_CONNECTION)
         mHandler.sendMessage(writeErrorMsg)
     }
 

@@ -51,6 +51,7 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         super.onDestroy()
         mPresenter.cancelBluetoothService()
     }
+
     private fun onTouchGrab(motionEvent: MotionEvent): Boolean {
         if (motionEvent.action == MotionEvent.ACTION_DOWN)
             mPresenter.onButtonClicked(GRAB)
