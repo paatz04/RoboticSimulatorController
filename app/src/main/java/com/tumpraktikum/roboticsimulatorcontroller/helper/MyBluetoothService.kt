@@ -1,7 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.helper
 
 import android.bluetooth.BluetoothSocket
-import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
@@ -30,6 +29,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
     }
 
     fun updateHandler(handler: Handler){
+        Log.d("MyBluetoothService", "Handler updated")
         this.mHandler = handler
     }
 
@@ -121,6 +121,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         private fun sendBluetoothConnectionClosedToActivity() {
             val message = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_CONNECTION_CLOSED)
             mHandler.sendMessage(message)
+            Log.d("MyBluetoothService", "sent connection closed")
         }
 
         fun close() {
@@ -152,10 +153,6 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             } catch (e: IOException) {
                 Log.e(TAG, "Could not close the socket", e)
             }
-        }
-
-        private fun updateHandler(handler: Handler) {
-            mConnectedThread.updateHandler(handler)
         }
     }
 }

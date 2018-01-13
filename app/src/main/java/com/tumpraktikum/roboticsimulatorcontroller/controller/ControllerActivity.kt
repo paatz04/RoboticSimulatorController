@@ -37,9 +37,9 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
 
     override fun onResume() {
         super.onResume()
+        mPresenter.takeView(this)
         mPresenter.updateBluetoothHandler()
         mPresenter.activateMotionDetector()
-        mPresenter.takeView(this)
     }
 
     override fun onPause() {

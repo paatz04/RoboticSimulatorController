@@ -3,6 +3,7 @@ package com.tumpraktikum.roboticsimulatorcontroller.controller
 import android.hardware.SensorManager
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.ButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 class ControllerPresenter
 @Inject
-constructor(mBluetoothManager: MyBluetoothManager)
+constructor(private var mBluetoothManager: MyBluetoothManager)
     : ControllerContract.Presenter, CallerMotionDetector, CallerButtonManager {
 
     private lateinit var mView: ControllerContract.View
@@ -47,11 +48,13 @@ constructor(mBluetoothManager: MyBluetoothManager)
     }
 
     private fun closeView() {
+        Log.d("ControllerPresenter", "close View")
         mView.close()
     }
 
     override fun takeView(view: ControllerContract.View) {
         mView = view
+        mBluetoothService = mBluetoothManager.getService()
     }
 
     override fun activateMotionDetector() {
@@ -66,12 +69,12 @@ constructor(mBluetoothManager: MyBluetoothManager)
         mMotionDetector = MotionDetector(this, sensorManager)
     }
 
-    override fun onChangeXAxis(newXValue : Float) {
+    override fun onChangeXAxis(newXValue: Float) {
         mView.setBody(newXValue)
         mBluetoothService.write(TransferDataConverter.getStringForBody(newXValue))
     }
 
-    override fun onChangeYAxis(newYValue : Float) {
+    override fun onChangeYAxis(newYValue: Float) {
         mView.setRotation(newYValue)
         mBluetoothService.write(TransferDataConverter.getStringForRotation(newYValue))
     }

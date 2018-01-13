@@ -10,7 +10,7 @@ import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageCons
 import java.io.IOException
 import java.util.*
 
-class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothAdapter: MyBluetoothManager, private val mHandler : Handler) : Thread() {
+class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothManager: MyBluetoothManager, private val mHandler : Handler) : Thread() {
 
     private val MYUUID: UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb")
     private val mSocket: BluetoothSocket
@@ -34,7 +34,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
 
     override fun run() {
         // Cancel discovery because it otherwise slows down the connection.
-        mBluetoothAdapter.cancelDiscovery()
+        mBluetoothManager.cancelDiscovery()
 
         try {
             // Connect to the remote device through the socket. This call blocks
@@ -42,15 +42,12 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
             mSocket.connect()
         } catch (connectException: IOException) {
             closeBluetoothSocket()
+            mBluetoothManager.startDiscovery()
             sendFailureMessageBackToActivity(connectException.localizedMessage)
             return
         }
         mBluetoothService = MyBluetoothService(mHandler, mSocket)
-        try {
-            mBluetoothAdapter.setService(mBluetoothService)
-        }catch (e: MyBluetoothServiceException) {
-
-        }
+        mBluetoothManager.setService(mBluetoothService)
 
         sendSwitchActivityMessageBackToActivity()
     }
