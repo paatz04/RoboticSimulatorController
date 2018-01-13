@@ -1,6 +1,8 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.hardware.SensorManager
+import android.os.Handler
+import android.os.Message
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.ButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
@@ -9,6 +11,7 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDete
 import com.tumpraktikum.roboticsimulatorcontroller.controller.dataconverter.TransferDataConverter
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothService
+import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
 import javax.inject.Inject
 
 class ControllerPresenter
@@ -19,10 +22,37 @@ constructor(mBluetoothManager: MyBluetoothManager)
     private lateinit var mView: ControllerContract.View
 
     private lateinit var mMotionDetector: MotionDetector
-    private var mButtonManager : ButtonManager = ButtonManager(this)
+    private var mButtonManager: ButtonManager = ButtonManager(this)
 
     private var mBluetoothService: MyBluetoothService = mBluetoothManager.getService()
 
+
+    override fun updateBluetoothHandler() {
+        mBluetoothService.updateHandler(getBluetoothHandler())
+    }
+
+    override fun cancelBluetoothService() {
+        mBluetoothService.close()
+    }
+
+    private fun getBluetoothHandler(): Handler {
+        return Handler(Handler.Callback {
+            message: Message? ->
+            when (message?.what) {
+                MessageConstants.MESSAGE_TOAST -> mView.showToast( message.data?.getString("toast") ?: "message is null")
+                MessageConstants.MESSAGE_BLUETOOTH_CONNECTION_CLOSED -> closeView()
+            }
+            false
+        })
+    }
+
+    private fun closeView() {
+        mView.close()
+    }
+
+    override fun takeView(view: ControllerContract.View) {
+        mView = view
+    }
 
     override fun activateMotionDetector() {
         mMotionDetector.activateSensorManager()
@@ -32,26 +62,18 @@ constructor(mBluetoothManager: MyBluetoothManager)
         mMotionDetector.deactivateSensorManager()
     }
 
-    override fun cancelBluetoothService() {
-        mBluetoothService.close()
-    }
-
-    override fun takeView(view: ControllerContract.View) {
-        mView = view
-    }
-
     override fun setMotionDetector(sensorManager: SensorManager) {
         mMotionDetector = MotionDetector(this, sensorManager)
     }
 
     override fun onChangeXAxis(newXValue : Float) {
-        mView?.setBody(newXValue)
-        mBluetoothService?.write(TransferDataConverter.getStringForBody(newXValue))
+        mView.setBody(newXValue)
+        mBluetoothService.write(TransferDataConverter.getStringForBody(newXValue))
     }
 
     override fun onChangeYAxis(newYValue : Float) {
-        mView?.setRotation(newYValue)
-        mBluetoothService?.write(TransferDataConverter.getStringForRotation(newYValue))
+        mView.setRotation(newYValue)
+        mBluetoothService.write(TransferDataConverter.getStringForRotation(newYValue))
     }
 
     override fun onChangeZAxis(newZValue: Float) { }

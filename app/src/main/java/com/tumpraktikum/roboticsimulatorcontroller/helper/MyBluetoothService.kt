@@ -70,17 +70,21 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         override fun run() {
+            listenToInputStream()
+        }
+
+        private fun listenToInputStream() {
             mBuffer = ByteArray(1024)
             var numberReadBytes: Int
 
-            // Keep listening to the InputStream until an exception occurs.
             while (true) {
                 try {
                     numberReadBytes = readFromInputStreamIntoBuffer()
                     sendBufferToActivity(numberReadBytes)
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
-                    // ToDo close everything and return to the MainActivity
+                    sendBluetoothConnectionClosedToActivity()
+                    close()
                     break
                 }
             }
@@ -97,14 +101,14 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             readMsg.sendToTarget()
         }
 
-        // Call this from the main activity to send data to the remote device.
         fun write(message: String) {
             try {
                 mOutStream.writeUTF(message)
                 sendSentMessageToActivity(message)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when sending data", e)
-                sendFailureMessageToActivity()
+                sendBluetoothConnectionClosedToActivity()
+                close()
             }
         }
 
@@ -114,16 +118,11 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             writtenMsg.sendToTarget()
         }
 
-        private fun sendFailureMessageToActivity() {
-            // ToDo: return to the controller activity, because connection to the server closed
-            val writeErrorMsg = mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST)
-            val bundle = Bundle()
-            bundle.putString("toast", "Couldn't send data to the other device")
-            writeErrorMsg.data = bundle
-            mHandler.sendMessage(writeErrorMsg)
+        private fun sendBluetoothConnectionClosedToActivity() {
+            val message = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_CONNECTION_CLOSED)
+            mHandler.sendMessage(message)
         }
 
-        // Call this method from the main activity to shut down the connection.
         fun close() {
             // ToDo connection did not close correctly. Read isn't interrupted
             closeInputStream()
@@ -153,6 +152,10 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             } catch (e: IOException) {
                 Log.e(TAG, "Could not close the socket", e)
             }
+        }
+
+        private fun updateHandler(handler: Handler) {
+            mConnectedThread.updateHandler(handler)
         }
     }
 }

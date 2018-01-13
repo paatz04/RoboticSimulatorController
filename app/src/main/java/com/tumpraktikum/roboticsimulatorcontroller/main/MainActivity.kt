@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         startActivity(intent)
     }
 
-    // ToDo Delete, because isn't in use
+    // ToDo Delete, because isn't in use (move to the start activity, which must be created)
     override fun showNotSupported() {
         rlNotSupported.visibility = View.VISIBLE
         rlEmptyView.visibility = View.GONE

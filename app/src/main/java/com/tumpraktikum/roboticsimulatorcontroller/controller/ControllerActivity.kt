@@ -6,6 +6,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
+import android.widget.Toast
 import com.tumpraktikum.roboticsimulatorcontroller.R
 import com.tumpraktikum.roboticsimulatorcontroller.application.App
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton.*
@@ -36,6 +37,7 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
 
     override fun onResume() {
         super.onResume()
+        mPresenter.updateBluetoothHandler()
         mPresenter.activateMotionDetector()
         mPresenter.takeView(this)
     }
@@ -81,8 +83,15 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         return false
     }
 
+    override fun close() {
+        finish()
+    }
+
     override fun showEmptyView() {
-        TODO("not implemented")
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     @SuppressLint("SetTextI18n")

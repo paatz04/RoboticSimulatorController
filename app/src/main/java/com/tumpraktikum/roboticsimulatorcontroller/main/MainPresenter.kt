@@ -57,14 +57,17 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
     }
 
     override fun startDiscovery() {
-        if (mPermissionNearbyBluetoothDevices) {
+        if (mPermissionNearbyBluetoothDevices && myBluetoothManager.isBluetoothEnabled()) {
             mItems.clear()
             mAdapter.setItems(mItems)
             mAdapter.notifyDataSetChanged()
             mView.setOtherListHeight()
             myBluetoothManager.startDiscovery()
         }else{
-            mView.showToast("Permission not granted!")
+            if (!mPermissionNearbyBluetoothDevices)
+                mView.showToast("Permission not granted!")
+            if (!myBluetoothManager.isBluetoothEnabled())
+                mView.showToast("Blutooth isn't enabled!")
         }
     }
 
