@@ -15,7 +15,7 @@ import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageCons
 import javax.inject.Inject
 
 
-class MainPresenter @Inject constructor(private val myBluetoothManager: MyBluetoothManager, private val mContext:Context) :
+class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoothManager, private val mContext:Context) :
         MainContract.Presenter {
 
     private lateinit var mView: MainContract.View
@@ -33,50 +33,55 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
 
     override fun takeView(view: MainContract.View) {
         this.mView = view
-        checkIfBluetoothOn()
+        if (isBluetoothOn()) {
+            mView.showBluetoothDevices()
+            initBluetoothAdapter()
+        }else
+            mView.showEmptyView()
     }
 
     override fun setPermissionNearbyBluetoothDevices(permissionGranted: Boolean) {
-        // ToDo: Only for not paired devices, or for all devices?
+        // ToDo: Only for not paired devices, or for all devices? Isn't used now
         mPermissionNearbyBluetoothDevices = permissionGranted
     }
 
-    override fun checkIfBluetoothOn() {
-        if (myBluetoothManager.isBluetoothEnabled()) {
-            mView.showBluetoothDevices()
-            mAdapter = mView.setAdapter()
-            mAdapter.setItems(mItems)
-            mAdapter.notifyDataSetChanged()
-            mView.setOtherListHeight()
-
-            mPairedAdapter = mView.setPairedAdapter()
-            addPairedDevices()
-        } else {
-            mView.showEmptyView()
-        }
+    private fun isBluetoothOn(): Boolean {
+        return mBluetoothmanager.isBluetoothEnabled()
     }
 
-    override fun startDiscovery() {
-        if (mPermissionNearbyBluetoothDevices && myBluetoothManager.isBluetoothEnabled()) {
-            mItems.clear()
-            mAdapter.setItems(mItems)
-            mAdapter.notifyDataSetChanged()
-            mView.setOtherListHeight()
-            myBluetoothManager.startDiscovery()
-        }else{
-            if (!mPermissionNearbyBluetoothDevices)
-                mView.showToast("Permission not granted!")
-            if (!myBluetoothManager.isBluetoothEnabled())
-                mView.showToast("Blutooth isn't enabled!")
-        }
+    private fun initBluetoothAdapter() {
+        initBluetoothAdapterPairedDevices()
+        initBluetoothAdapterNotPairedDevices()
+        mBluetoothmanager.startDiscovery()
+    }
+
+    private fun initBluetoothAdapterPairedDevices() {
+        mPairedAdapter = mView.setPairedAdapter()
+
+        mPairedItems.clear()
+        mPairedAdapter.setItems(mPairedItems)
+        mPairedAdapter.notifyDataSetChanged()
+
+        mBluetoothmanager.queryPairedDevices().forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
+        mPairedAdapter.setItems(mPairedItems)
+        mPairedAdapter.notifyDataSetChanged()
+
+        mView.setPairedListHeight()
+    }
+
+    private fun initBluetoothAdapterNotPairedDevices() {
+        mAdapter = mView.setAdapter()
+        mAdapter.setItems(mItems)
+        mAdapter.notifyDataSetChanged()
+        mView.setOtherListHeight()
     }
 
     override fun cancelDiscovery() {
-        myBluetoothManager.cancelDiscovery()
+        mBluetoothmanager.cancelDiscovery()
     }
 
     override fun turnBluetoothOn(context: AppCompatActivity) {
-        myBluetoothManager.enableBluetooth(context)
+        mBluetoothmanager.enableBluetooth(context)
     }
 
     override fun connectToDevice() {
@@ -88,21 +93,24 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
             // Discovery has found a device. Get the BluetoothDevice
             // object and its info from the Intent.
             val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            if (!mItems.contains(device)) {
-                mItems.add(device)
-                mAdapter.setItems(mItems)
-                mAdapter.notifyDataSetChanged()
-                mView.setOtherListHeight()
-            }
+            addBluetoothDeviceToNotPairedDevices(device)
+        }
+    }
+
+    private fun addBluetoothDeviceToNotPairedDevices(device: BluetoothDevice) {
+        if (!mItems.contains(device) && !mPairedItems.contains(device)) {
+            mItems.add(device)
+            mAdapter.setItems(mItems)
+            mAdapter.notifyDataSetChanged()
+            mView.setOtherListHeight()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MyBluetoothManager.REQUEST_ENABLE_BT && resultCode == -1) {
             // bluetooth turned on successfully
-            startDiscovery()
             mView.showBluetoothDevices()
-            checkIfBluetoothOn()
+            initBluetoothAdapter()
         } else {
             //something wen wrong with bluetooth intent
             mView.showToast(mContext.getString(R.string.bluetoothProblem))
@@ -134,20 +142,10 @@ class MainPresenter @Inject constructor(private val myBluetoothManager: MyBlueto
     private fun getConnectThread(position: Int, pairedDevice: Boolean, mHandler: Handler): ConnectThread {
         return if (pairedDevice) {
             Log.d("test", "Name: " + mPairedItems[position].address)
-            ConnectThread(mPairedItems[position], myBluetoothManager, mHandler)
+            ConnectThread(mPairedItems[position], mBluetoothmanager, mHandler)
         } else {
             Log.d("test", "Name: " + mItems[position].address)
-            ConnectThread(mItems[position], myBluetoothManager, mHandler)
+            ConnectThread(mItems[position], mBluetoothmanager, mHandler)
         }
-    }
-
-    private fun addPairedDevices() {
-        mPairedItems.clear()
-        mPairedAdapter.setItems(mPairedItems)
-        mPairedAdapter.notifyDataSetChanged()
-        myBluetoothManager.queryPairedDevices().forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
-        mPairedAdapter.setItems(mPairedItems)
-        mPairedAdapter.notifyDataSetChanged()
-        mView.setPairedListHeight()
     }
 }

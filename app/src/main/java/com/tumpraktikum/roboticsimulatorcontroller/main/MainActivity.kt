@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     // Create a BroadcastReceiver for ACTION_FOUND.
     private val mReceiver = object : BroadcastReceiver() {
-
         override fun onReceive(context: Context, intent: Intent) {
             mPresenter.bluetoothDeviceFound(context, intent)
         }
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onResume() {
         super.onResume()
         mPresenter.takeView(this)
-        mPresenter.startDiscovery()
     }
 
     override fun onDestroy() {

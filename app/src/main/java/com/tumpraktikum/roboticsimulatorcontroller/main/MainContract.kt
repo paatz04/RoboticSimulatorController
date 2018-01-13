@@ -23,12 +23,10 @@ interface MainContract {
 
     interface Presenter : BasePresenter<View> {
         fun setPermissionNearbyBluetoothDevices(permissionGranted: Boolean)
-        fun checkIfBluetoothOn()
         fun turnBluetoothOn(context: AppCompatActivity)
         fun connectToDevice()
         fun bluetoothDeviceFound(context: Context, intent: Intent)
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-        fun startDiscovery()
         fun cancelDiscovery()
         fun onItemClick(position: Int, pairedDevice: Boolean)
     }
