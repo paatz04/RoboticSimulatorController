@@ -1,7 +1,10 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
+import android.content.Context
+import android.content.Intent
 import android.hardware.SensorManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.*
+import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.BasePresenter
+import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.BaseView
 
 interface ControllerContract {
 
@@ -16,6 +19,7 @@ interface ControllerContract {
     }
 
     interface Presenter : BasePresenter<View> {
+        fun bluetoothActionFound(context: Context, intent: Intent)
         fun activateMotionDetector()
         fun deactivateMotionDetector()
         fun cancelBluetoothService()

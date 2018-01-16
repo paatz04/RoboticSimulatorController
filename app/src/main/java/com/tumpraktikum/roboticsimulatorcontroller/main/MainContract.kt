@@ -28,7 +28,7 @@ interface MainContract {
         fun locationPermissionGranted(granted: Boolean)
         fun turnBluetoothOn(context: AppCompatActivity)
         fun connectToDevice()
-        fun bluetoothDeviceFound(context: Context, intent: Intent)
+        fun bluetoothActionFound(context: Context, intent: Intent)
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun cancelDiscovery()
         fun onItemClick(position: Int, pairedDevice: Boolean)

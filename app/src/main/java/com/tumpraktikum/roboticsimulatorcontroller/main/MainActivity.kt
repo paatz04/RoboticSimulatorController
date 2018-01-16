@@ -24,20 +24,17 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-/**
- * Habe in MyBluetoothManager mBluetoothAdapter nullsafe gemacht. Falls das Gerät jedoch kein Bluetooth besitzt liefert
- * BluetoothAdapter.getDefaultDevice() (Android Methode) null zurück. Ohne Bluetooth macht die gesamte App auch wenig Sinn
- */
+
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     @Inject lateinit var mPresenter: MainPresenter
 
     val FINE_LOATION_ACCESS_REQUEST_CODE = 1
 
-    // Create a BroadcastReceiver for ACTION_FOUND.
+    // Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
     private val mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            mPresenter.bluetoothDeviceFound(context, intent)
+            mPresenter.bluetoothActionFound(context, intent)
         }
     }
 
@@ -50,7 +47,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
             (application as App).appComponent.inject(this)
 
-            val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+            val filter = IntentFilter()
+            filter.addAction(BluetoothDevice.ACTION_FOUND)
+            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
             registerReceiver(mReceiver, filter)
             askForPermission()
 

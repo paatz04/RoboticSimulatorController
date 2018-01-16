@@ -1,5 +1,6 @@
 package com.tumpraktikum.roboticsimulatorcontroller.main
 
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
@@ -33,6 +34,11 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
 
     override fun takeView(view: MainContract.View) {
         this.mView = view
+
+        setViews()
+    }
+
+    private fun setViews(){
         if (isBluetoothOn()) {
             mView.showBluetoothDevices()
             initBluetoothAdapter()
@@ -42,7 +48,6 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
         }else
             mView.showEmptyView()
     }
-
 
     private fun isBluetoothOn(): Boolean {
         return mBluetoothmanager.isBluetoothEnabled()
@@ -86,13 +91,24 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
     override fun connectToDevice() {
     }
 
-    override fun bluetoothDeviceFound(context: Context, intent: Intent) {
+    override fun bluetoothActionFound(context: Context, intent: Intent) {
         val action = intent.action
-        if (BluetoothDevice.ACTION_FOUND == action) {
-            // Discovery has found a device. Get the BluetoothDevice
-            // object and its info from the Intent.
-            val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            addBluetoothDeviceToNotPairedDevices(device)
+        when ( action) {
+            BluetoothDevice.ACTION_FOUND -> {
+                // Discovery has found a device. Get the BluetoothDevice
+                // object and its info from the Intent.
+                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                addBluetoothDeviceToNotPairedDevices(device)
+            }
+            BluetoothAdapter.ACTION_STATE_CHANGED -> {
+                val state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                when(state)
+                {
+                    BluetoothAdapter.STATE_OFF,BluetoothAdapter.STATE_TURNING_OFF -> {
+                        setViews()
+                    }
+                }
+            }
         }
     }
 

@@ -1,7 +1,12 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -17,6 +22,13 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
 
     @Inject lateinit var mPresenter: ControllerPresenter
 
+    // Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
+    private val mReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            mPresenter.bluetoothActionFound(context, intent)
+        }
+    }
+
     private val mSensorManager : SensorManager by lazy {
         // by lazy this code is only executed the first time
         getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -28,6 +40,11 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
 
         (application as App).appComponent.inject(this)
         mPresenter.setMotionDetector(mSensorManager)
+
+        val filter = IntentFilter()
+        filter.addAction(BluetoothDevice.ACTION_FOUND)
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
+        registerReceiver(mReceiver, filter)
 
         btnGrab.setOnTouchListener { _, motionEvent ->  onTouchGrab(motionEvent) }
         btnRelease.setOnTouchListener { _, motionEvent -> onTouchReleased(motionEvent) }
@@ -50,6 +67,8 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
     override fun onDestroy() {
         super.onDestroy()
         mPresenter.cancelBluetoothService()
+        unregisterReceiver(mReceiver)
+
     }
     private fun onTouchGrab(motionEvent: MotionEvent): Boolean {
         if (motionEvent.action == MotionEvent.ACTION_DOWN)

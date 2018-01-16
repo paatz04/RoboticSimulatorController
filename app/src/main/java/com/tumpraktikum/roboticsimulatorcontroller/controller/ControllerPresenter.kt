@@ -1,15 +1,17 @@
 package com.tumpraktikum.roboticsimulatorcontroller.controller
 
+import android.bluetooth.BluetoothAdapter
+import android.content.Context
+import android.content.Intent
 import android.hardware.SensorManager
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.ButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
+import com.tumpraktikum.roboticsimulatorcontroller.controller.dataconverter.TransferDataConverter
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerMotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDetector
-import com.tumpraktikum.roboticsimulatorcontroller.controller.dataconverter.TransferDataConverter
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
 import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothService
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
@@ -41,15 +43,10 @@ constructor(private var mBluetoothManager: MyBluetoothManager)
             message: Message? ->
             when (message?.what) {
                 MessageConstants.MESSAGE_TOAST -> mView.showToast( message.data?.getString("toast") ?: "message is null")
-                MessageConstants.MESSAGE_BLUETOOTH_CONNECTION_CLOSED -> closeView()
+                MessageConstants.MESSAGE_BLUETOOTH_CONNECTION_CLOSED -> mView.close()
             }
             false
         })
-    }
-
-    private fun closeView() {
-        Log.d("ControllerPresenter", "close View")
-        mView.close()
     }
 
     override fun takeView(view: ControllerContract.View) {
@@ -97,6 +94,21 @@ constructor(private var mBluetoothManager: MyBluetoothManager)
     override fun onChangeGrabValue(newGrabValue : Float) {
         mView.setGrab(newGrabValue)
         mBluetoothService.write(TransferDataConverter.getStringForGrab(newGrabValue))
+    }
+
+    override fun bluetoothActionFound(context: Context, intent: Intent) {
+        val action = intent.action
+        when ( action) {
+            BluetoothAdapter.ACTION_STATE_CHANGED -> {
+                val state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                when(state)
+                {
+                    BluetoothAdapter.STATE_OFF, BluetoothAdapter.STATE_TURNING_OFF -> {
+                        mView.close()
+                    }
+                }
+            }
+        }
     }
 
 }
