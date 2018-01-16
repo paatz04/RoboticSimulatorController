@@ -12,4 +12,5 @@
     <string name="name_unavailable">Name unavailable</string>
     <string name="paired_devices">Paired Devices</string>
     <string name="other_devices">Other Devices</string>
+    <string name="turn_on_location_permission">Turn on location Permission</string>
 </resources>

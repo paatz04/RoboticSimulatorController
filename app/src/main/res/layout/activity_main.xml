@@ -67,6 +67,15 @@
                     android:textSize="12sp"
                     android:textStyle="bold"/>
 
+                <Button
+                    android:id="@+id/button"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView4"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/turn_on_location_permission"/>
+
                 <ListView
                     android:id="@+id/listViewOtherDevices"
                     android:layout_width="match_parent"

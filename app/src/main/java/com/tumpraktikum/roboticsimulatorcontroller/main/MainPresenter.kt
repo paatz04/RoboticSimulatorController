@@ -36,14 +36,13 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
         if (isBluetoothOn()) {
             mView.showBluetoothDevices()
             initBluetoothAdapter()
+            if(!mPermissionNearbyBluetoothDevices)
+                mView.showPermissionButton()
+
         }else
             mView.showEmptyView()
     }
 
-    override fun setPermissionNearbyBluetoothDevices(permissionGranted: Boolean) {
-        // ToDo: Only for not paired devices, or for all devices? Isn't used now
-        mPermissionNearbyBluetoothDevices = permissionGranted
-    }
 
     private fun isBluetoothOn(): Boolean {
         return mBluetoothmanager.isBluetoothEnabled()
@@ -104,6 +103,10 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
             mAdapter.notifyDataSetChanged()
             mView.setOtherListHeight()
         }
+    }
+
+    override fun locationPermissionGranted(granted: Boolean) {
+        mPermissionNearbyBluetoothDevices = granted
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

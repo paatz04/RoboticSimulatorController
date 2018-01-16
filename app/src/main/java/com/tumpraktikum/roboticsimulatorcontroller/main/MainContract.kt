@@ -20,10 +20,12 @@ interface MainContract {
         fun showToast(msg: String)
         fun setOtherListHeight()
         fun setPairedListHeight()
+        fun showPermissionButton()
+
     }
 
     interface Presenter : BasePresenter<View> {
-        fun setPermissionNearbyBluetoothDevices(permissionGranted: Boolean)
+        fun locationPermissionGranted(granted: Boolean)
         fun turnBluetoothOn(context: AppCompatActivity)
         fun connectToDevice()
         fun bluetoothDeviceFound(context: Context, intent: Intent)
