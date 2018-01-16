@@ -30,7 +30,7 @@
         android:text="@string/release" />
 
     <Button
-        android:id="@+id/btnTipUp"
+        android:id="@+id/btnTipDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnRelease"
@@ -39,17 +39,17 @@
         android:layout_marginStart="18dp"
         android:layout_toEndOf="@+id/tvValueRotation"
         android:layout_toRightOf="@+id/tvValueRotation"
-        android:text="@string/tipUp" />
+        android:text="@string/tipDown" />
 
     <Button
-        android:id="@+id/btnTipDown"
+        android:id="@+id/btnTipUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnGrab"
         android:layout_alignBottom="@+id/btnGrab"
-        android:layout_alignLeft="@+id/btnTipUp"
-        android:layout_alignStart="@+id/btnTipUp"
-        android:text="@string/tipDown" />
+        android:layout_alignLeft="@+id/btnTipDown"
+        android:layout_alignStart="@+id/btnTipDown"
+        android:text="@string/tipUp" />
 
     <TextView
         android:id="@+id/tvValueBody"
