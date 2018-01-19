@@ -16,6 +16,11 @@ interface ControllerContract {
         fun setRotation(value: Float)
         fun setTip(value: Float)
         fun setGrab(value: Float)
+        fun setColorGrab(color: String)
+        fun setScoreRed(score: Int)
+        fun setScoreGreen(score: Int)
+        fun setScoreBlue(score: Int)
+        fun setScoreMissed(score: Int)
     }
 
     interface Presenter : BasePresenter<View> {
