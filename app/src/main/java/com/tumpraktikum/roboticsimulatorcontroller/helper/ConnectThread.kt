@@ -3,7 +3,6 @@ package com.tumpraktikum.roboticsimulatorcontroller.helper
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues.TAG
-import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
@@ -12,8 +11,12 @@ import java.util.*
 
 class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothManager: MyBluetoothManager, private val mHandler : Handler) : Thread() {
 
+    // the MyUUID is used and shared by the client and server application to establish the bluetooth connection
     private val MYUUID: UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb")
     private val mSocket: BluetoothSocket
+
+    // the bluetoothService defines an established connection and is used to actually communicate with
+    // the bluetooth server.
     private lateinit var mBluetoothService: MyBluetoothService
 
     init {

@@ -142,11 +142,20 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         return adapter
     }
 
+    /*
+    When requesting to turn on bluetooth, the result will be returned through the onActivityResult
+    lifecycle method. The result is delegated to the presenter which will handle the result accordingly
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         mPresenter.onActivityResult(requestCode, resultCode, data)
     }
 
+    /*
+    When requesting a permission (in our case the location permission for bluetooth discovery) the
+    response is sent back through the onRequestPermissionResult method. This method checks if the
+    permission has been granted, and if yes it sets the locationGranted property of the presenter.
+     */
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -162,27 +171,44 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
+    /*
+    This methods asks for permission for location services, in order to make the bluetooth discovery work
+    It's only required on devices post VERSION_CODES.M Marshmallow, because previously the permissions
+    are not granted during runtime, but when the application is first installed. For >M the permission
+    can always be revoked so this method has to always be called. For <M devices the permission can only be
+    revoked by uninstalling the application.
+     */
     private fun askForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  // Only ask for these permissions on runtime when running Android 6.0 or higher
             when (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                //if permission is denied, create an alert dialogue and ask for runtime permission
                 PackageManager.PERMISSION_DENIED -> (AlertDialog.Builder(this)
                         .setTitle("Runtime Permissions up ahead")
-                        .setMessage(Html.fromHtml("<p>To find nearby bluetooth devices please click \"Allow\" on the runtime permissions popup.</p>"))
+                        .setMessage(Html.fromHtml("<p>To find nearby new bluetooth devices please click \"Allow\" on the runtime permissions popup.</p>"))
                         .setNeutralButton("Okay", DialogInterface.OnClickListener { _, _ ->
                             if (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                //response comes through onRequestPermissionResult callback
                                 ActivityCompat.requestPermissions(this,
                                         arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                                         FINE_LOATION_ACCESS_REQUEST_CODE)
                             }
                         })
                         .show())
+                //if the permission is already granted, proceed with setting location permission to granted
                 PackageManager.PERMISSION_GRANTED -> {
                     mPresenter.locationPermissionGranted(true)
                 }
             }
+        }else // on devices previous to Marshmallow the permission is granted when the app is installed (no runtime permissions)
+        {
+            mPresenter.locationPermissionGranted(true)
         }
     }
 
+    /*
+    Sets the list height manually, because two lists are within a Scrollview. Without this method
+    the inner listViews would not expand and there for not work
+     */
     override fun setPairedListHeight() {
         setListViewHeightBasedOnChildren(listViewPairedDevices)
 
@@ -192,9 +218,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         setListViewHeightBasedOnChildren(listViewOtherDevices)
     }
 
-    /**** Method for Setting the Height of the ListView dynamically.
-     * Hack to fix the issue of not showing all the items of the ListView
-     * when placed inside a ScrollView   */
+    /*
+    Method for Setting the Height of the ListView dynamically.
+    Hack to fix the issue of not showing all the items of the ListView
+    when placed inside a ScrollView
+      */
     private fun setListViewHeightBasedOnChildren(listView: ListView) {
         val listAdapter = listView.adapter ?: return
 
