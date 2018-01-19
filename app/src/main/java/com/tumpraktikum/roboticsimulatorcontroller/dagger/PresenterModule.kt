@@ -9,6 +9,9 @@ import dagger.Provides
 import javax.inject.Singleton
 
 
+/*
+This module defines the injection of the BluetoothManager and context in the presenters used.
+ */
 @Module
 class PresenterModule {
     @Provides

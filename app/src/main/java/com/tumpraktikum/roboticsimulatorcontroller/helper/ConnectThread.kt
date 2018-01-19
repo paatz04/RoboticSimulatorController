@@ -9,7 +9,7 @@ import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageCons
 import java.io.IOException
 import java.util.*
 
-class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothManager: MyBluetoothManager, private val mHandler : Handler) : Thread() {
+class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetoothManager: MyBluetoothManager, private val mHandler: Handler) : Thread() {
 
     // the MyUUID is used and shared by the client and server application to establish the bluetooth connection
     private val MYUUID: UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb")
@@ -20,11 +20,11 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
     private lateinit var mBluetoothService: MyBluetoothService
 
     init {
-         mSocket = getBluetoothSocket()
+        mSocket = getBluetoothSocket()
     }
 
     @Throws(ConnectThreadException::class)
-    private fun getBluetoothSocket() : BluetoothSocket {
+    private fun getBluetoothSocket(): BluetoothSocket {
         try {
             // Get a BluetoothSocket to connect with the given BluetoothDevice.
             // MY_UUID is the app's UUID string, also used in the server code.
@@ -49,9 +49,14 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
             sendErrorBluetoothConnectionToActivity(connectException.localizedMessage)
             return
         }
+        // if we reach this code, the connection is established and the communication socket and handler
+        // is passed to a new Thread the MyBluetoothService, which listens and writes through the
+        // bluetooth socket
         mBluetoothService = MyBluetoothService(mHandler, mSocket)
+        // a reference is set to our manager, so that other activities have access to the established connection
         mBluetoothManager.setService(mBluetoothService)
 
+        //the controller activity can be loaded because connection was succesful
         sendSwitchActivityMessageBackToActivity()
     }
 
@@ -71,14 +76,5 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
     private fun sendSwitchActivityMessageBackToActivity() {
         val msg = mHandler.obtainMessage(MessageConstants.MESSAGE_SWITCH_ACTIVITY)
         mHandler.sendMessage(msg)
-    }
-
-    // Closes the client socket and causes the thread to finish.
-    fun cancel() {
-        try {
-            mSocket.close()
-        } catch (e: IOException) {
-            Log.e(TAG, "Could not close the client socket", e)
-        }
     }
 }

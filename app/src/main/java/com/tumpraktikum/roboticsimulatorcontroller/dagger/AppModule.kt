@@ -7,6 +7,9 @@ import dagger.Provides
 import javax.inject.Singleton
 
 
+/*
+The AppModule defines the Application context, that is injected when context is required.
+ */
 @Module
 class AppModule(private val app: Application) {
     @Provides

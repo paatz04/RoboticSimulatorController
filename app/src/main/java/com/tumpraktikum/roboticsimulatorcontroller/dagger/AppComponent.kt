@@ -14,6 +14,10 @@ import javax.inject.Singleton
     BluetoothModule::class]
     )
 
+/*
+This is the only Dagger component that we use, because of the simplicity of this application.
+It Injects the presenters into the according views and also provides android context where needed
+ */
 interface AppComponent {
     fun inject(target: MainActivity)
     fun inject(target: ControllerActivity)
