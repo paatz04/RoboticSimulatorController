@@ -130,6 +130,31 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
 
     @SuppressLint("SetTextI18n")
     override fun setGrab(value: Float) {
-        tvValueGrab.text = "Grab: " + value
+        tvValueGrab.text = "Grab: $value"
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setColorGrab(color: String) {
+        tvColorGrab.text = "Color Grab: $color"
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setScoreBlue(score: Int) {
+        tvScoreBlue.text = "Score Blue: $score"
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setScoreGreen(score: Int) {
+        tvScoreGreen.text = "Score Green: $score"
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setScoreRed(score: Int) {
+        tvScoreRed.text = "Score Red: $score"
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setScoreMissed(score: Int) {
+        tvScoreMissed.text = "Score Missed: $score"
     }
 }

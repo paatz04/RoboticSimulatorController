@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     @Inject lateinit var mPresenter: MainPresenter
 
-    val FINE_LOATION_ACCESS_REQUEST_CODE = 1
+    private val FINE_LOCATION_ACCESS_REQUEST_CODE = 1
 
     // Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
     private val mReceiver = object : BroadcastReceiver() {
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            FINE_LOATION_ACCESS_REQUEST_CODE -> {
+            FINE_LOCATION_ACCESS_REQUEST_CODE -> {
                 // If request is cancelled, the result arrays are empty.
                 mPresenter.locationPermissionGranted((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
                 return
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                             if (ContextCompat.checkSelfPermission(baseContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(this,
                                         arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                                        FINE_LOATION_ACCESS_REQUEST_CODE)
+                                        FINE_LOCATION_ACCESS_REQUEST_CODE)
                             }
                         })
                         .show())

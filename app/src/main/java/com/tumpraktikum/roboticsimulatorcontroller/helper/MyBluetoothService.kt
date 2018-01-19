@@ -4,15 +4,15 @@ import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
+import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
-import java.io.InputStream
 
 class MyBluetoothService(private var mHandler: Handler, private val mSocket: BluetoothSocket) {
     private var mConnectedThread: ConnectedThread
 
     companion object {
-        private val TAG = "MY_APP_DEBUG_TAG"
+        private const val TAG = "MY_APP_DEBUG_TAG"
     }
 
     init {
@@ -36,9 +36,8 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
     private inner class ConnectedThread : Thread() {
 
-        private val mInStream: InputStream
+        private val mInStream: DataInputStream
         private val mOutStream: DataOutputStream
-        private var mBuffer: ByteArray? = null
 
         init {
             try {
@@ -50,9 +49,9 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         @Throws(IOException::class)
-        private fun getInputStream(): InputStream {
+        private fun getInputStream(): DataInputStream {
             try {
-                return mSocket.inputStream
+                return DataInputStream(mSocket.inputStream)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when creating input stream", e)
                 throw IOException("Error occurred when creating input stream", e)
@@ -74,13 +73,9 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         private fun listenToInputStream() {
-            mBuffer = ByteArray(1024)
-            var numberReadBytes: Int
-
             while (true) {
                 try {
-                    numberReadBytes = readFromInputStreamIntoBuffer()
-                    sendBufferToActivity(numberReadBytes)
+                    sendReceivedDataToActivity(mInStream.readUTF())
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
                     sendBluetoothConnectionClosedToActivity()
@@ -90,15 +85,9 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             }
         }
 
-        private fun readFromInputStreamIntoBuffer(): Int {
-            return mInStream.read(mBuffer)
-        }
-
-        private fun sendBufferToActivity(numberReadBytes: Int) {
-            val readMsg = mHandler.obtainMessage(
-                    MessageConstants.MESSAGE_READ, numberReadBytes, -1,
-                    mBuffer)
-            readMsg.sendToTarget()
+        private fun sendReceivedDataToActivity(receivedData: String) {
+            val msg = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_MESSAGE, receivedData)
+            msg.sendToTarget()
         }
 
         fun write(message: String) {

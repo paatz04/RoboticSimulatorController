@@ -11,22 +11,22 @@
         android:id="@+id/btnGrab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnRelease"
-        android:layout_alignLeft="@+id/btnRelease"
-        android:layout_alignStart="@+id/btnRelease"
-        android:layout_marginBottom="55dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="73dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="73dp"
         android:text="@string/grab" />
 
     <Button
         android:id="@+id/btnRelease"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnGrab"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="152dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@+id/tvValueRotation"
-        android:layout_toStartOf="@+id/tvValueRotation"
+        android:layout_alignStart="@+id/btnGrab"
+        android:layout_marginBottom="75dp"
         android:text="@string/release" />
 
     <Button
@@ -35,20 +35,19 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnRelease"
         android:layout_alignBottom="@+id/btnRelease"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
-        android:layout_toEndOf="@+id/tvValueRotation"
-        android:layout_toRightOf="@+id/tvValueRotation"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="49dp"
+        android:layout_marginRight="49dp"
         android:text="@string/tipDown" />
 
     <Button
         android:id="@+id/btnTipUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnGrab"
-        android:layout_alignBottom="@+id/btnGrab"
-        android:layout_alignLeft="@+id/btnTipDown"
-        android:layout_alignStart="@+id/btnTipDown"
+        android:layout_alignEnd="@+id/btnTipDown"
+        android:layout_alignRight="@+id/btnTipDown"
+        android:layout_below="@+id/tvValueRotation"
         android:text="@string/tipUp" />
 
     <TextView
@@ -82,9 +81,63 @@
         android:id="@+id/tvValueGrab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvValueBody"
-        android:layout_marginTop="24dp"
-        android:layout_toEndOf="@+id/btnRelease"
-        android:layout_toRightOf="@+id/btnRelease"
+        android:layout_above="@+id/btnRelease"
+        android:layout_alignLeft="@+id/tvValueTip"
+        android:layout_alignStart="@+id/tvValueTip"
+        android:layout_marginBottom="41dp"
         android:text="Grab" />
+
+    <TextView
+        android:id="@+id/tvScoreRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvValueTip"
+        android:layout_marginEnd="62dp"
+        android:layout_marginRight="62dp"
+        android:layout_marginTop="13dp"
+        android:layout_toLeftOf="@+id/tvValueRotation"
+        android:layout_toStartOf="@+id/tvValueRotation"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvScoreBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvScoreRed"
+        android:layout_alignEnd="@+id/tvValueTip"
+        android:layout_alignRight="@+id/tvValueTip"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvScoreGreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvScoreBlue"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_toLeftOf="@+id/btnTipDown"
+        android:layout_toStartOf="@+id/btnTipDown"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvScoreMissed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvScoreGreen"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvColorGrab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvScoreRed"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_toLeftOf="@+id/tvScoreRed"
+        android:layout_toStartOf="@+id/tvScoreRed"
+        android:text="TextView" />
 </RelativeLayout>
