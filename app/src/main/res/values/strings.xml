@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RoboticSimulatorController</string>
+    <string name="app_name">Robotic Simulator Controller</string>
 
     <string name="turnOn">Turn on Bluetooth</string>
     <string name="bluetoothNotAvailable">No bluetooth available. We are sorry, but this application is not supported on your device</string>
@@ -14,4 +14,10 @@
     <string name="other_devices">Other Devices</string>
     <string name="turn_on_location_permission">Turn on location Permission</string>
     <string name="device_connection_issue">Couldn\'t connect to the device</string>
+    <string name="redScore">Red: %1$i</string>
+    <string name="blueScore">Blue: %1$i</string>
+
+    <string name="greenScore">Green: %1$i</string>
+    <string name="missed">Missed: %1$i</string>
+
 </resources>

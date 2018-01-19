@@ -7,137 +7,178 @@
     tools:context="com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerActivity"
     >
 
-    <Button
-        android:id="@+id/btnGrab"
+    <LinearLayout
+        android:id="@+id/llLeft"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="73dp"
-        android:layout_marginStart="73dp"
-        android:layout_marginTop="73dp"
-        android:text="@string/grab" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnRelease"
+        <Button
+            android:id="@+id/btnGrab"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/grab"/>
+
+        <Button
+            android:id="@+id/btnRelease"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/release"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llRight"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnTipUp"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/tipUp"/>
+
+        <Button
+            android:id="@+id/btnTipDown"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/tipDown"/>
+
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/llScores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnGrab"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@id/llLeft"
+        android:layout_toLeftOf="@id/llRight"
+        android:layout_toRightOf="@id/llLeft"
+        android:layout_toStartOf="@id/llRight"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tvScoreRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="TextView"/>
+
+        <TextView
+            android:id="@+id/tvScoreBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@android:color/holo_blue_dark"/>
+
+        <TextView
+            android:id="@+id/tvScoreGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@android:color/holo_green_dark"/>
+
+        <TextView
+            android:id="@+id/tvScoreMissed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/llLeft"
+        android:layout_toLeftOf="@id/llRight"
+        android:layout_toRightOf="@id/llLeft"
+        android:layout_toStartOf="@id/llRight"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/btnGrab"
-        android:layout_marginBottom="75dp"
-        android:text="@string/release" />
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnTipDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnRelease"
-        android:layout_alignBottom="@+id/btnRelease"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="49dp"
-        android:layout_marginRight="49dp"
-        android:text="@string/tipDown" />
+        <TextView
+            android:id="@+id/tvValueBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Body"
+            android:textAlignment="center"
+            android:textSize="12sp"/>
 
-    <Button
-        android:id="@+id/btnTipUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btnTipDown"
-        android:layout_alignRight="@+id/btnTipDown"
-        android:layout_below="@+id/tvValueRotation"
-        android:text="@string/tipUp" />
+        <TextView
+            android:id="@+id/tvValueRotation"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Rotation"
+            android:textAlignment="center"
+            android:textSize="12sp"/>
 
-    <TextView
-        android:id="@+id/tvValueBody"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnTipUp"
-        android:layout_centerHorizontal="true"
-        android:text="Body"
-        android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvValueTip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Tip"
+            android:textAlignment="center"
+            android:textSize="12sp"/>
 
-    <TextView
-        android:id="@+id/tvValueRotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnGrab"
-        android:layout_alignBottom="@+id/btnGrab"
-        android:layout_centerHorizontal="true"
-        android:text="Rotation"
-        android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvValueGrab"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Grab"
+            android:textAlignment="center"
+            android:textSize="12sp"/>
 
-    <TextView
-        android:id="@+id/tvValueTip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnTipDown"
-        android:layout_centerHorizontal="true"
-        android:text="Tip" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvValueGrab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnRelease"
-        android:layout_alignLeft="@+id/tvValueTip"
-        android:layout_alignStart="@+id/tvValueTip"
-        android:layout_marginBottom="41dp"
-        android:text="Grab" />
-
-    <TextView
-        android:id="@+id/tvScoreRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvValueTip"
-        android:layout_marginEnd="62dp"
-        android:layout_marginRight="62dp"
-        android:layout_marginTop="13dp"
-        android:layout_toLeftOf="@+id/tvValueRotation"
-        android:layout_toStartOf="@+id/tvValueRotation"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tvScoreBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvScoreRed"
-        android:layout_alignEnd="@+id/tvValueTip"
-        android:layout_alignRight="@+id/tvValueTip"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tvScoreGreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvScoreBlue"
-        android:layout_marginEnd="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_toLeftOf="@+id/btnTipDown"
-        android:layout_toStartOf="@+id/btnTipDown"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tvScoreMissed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/tvScoreGreen"
-        android:layout_marginEnd="33dp"
-        android:layout_marginRight="33dp"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/tvColorGrab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvScoreRed"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:layout_toLeftOf="@+id/tvScoreRed"
-        android:layout_toStartOf="@+id/tvScoreRed"
-        android:text="TextView" />
+        android:layout_below="@+id/llScores"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Controller Mode"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+
 </RelativeLayout>

@@ -18,9 +18,10 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.Robo
 import kotlinx.android.synthetic.main.activity_controller.*
 import javax.inject.Inject
 
-class ControllerActivity : AppCompatActivity(), ControllerContract.View{
+class ControllerActivity : AppCompatActivity(), ControllerContract.View {
 
-    @Inject lateinit var mPresenter: ControllerPresenter
+    @Inject
+    lateinit var mPresenter: ControllerPresenter
 
     // Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
     private val mReceiver = object : BroadcastReceiver() {
@@ -29,7 +30,7 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         }
     }
 
-    private val mSensorManager : SensorManager by lazy {
+    private val mSensorManager: SensorManager by lazy {
         // by lazy this code is only executed the first time
         getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
@@ -46,10 +47,10 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
         registerReceiver(mReceiver, filter)
 
-        btnGrab.setOnTouchListener { _, motionEvent ->  onTouchGrab(motionEvent) }
+        btnGrab.setOnTouchListener { _, motionEvent -> onTouchGrab(motionEvent) }
         btnRelease.setOnTouchListener { _, motionEvent -> onTouchReleased(motionEvent) }
-        btnTipUp.setOnTouchListener{ _, motionEvent -> onTouchTipUp(motionEvent) }
-        btnTipDown.setOnTouchListener { _, motionEvent ->  onTouchTipDown(motionEvent) }
+        btnTipUp.setOnTouchListener { _, motionEvent -> onTouchTipUp(motionEvent) }
+        btnTipDown.setOnTouchListener { _, motionEvent -> onTouchTipDown(motionEvent) }
     }
 
     override fun onResume() {
@@ -70,6 +71,7 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         unregisterReceiver(mReceiver)
 
     }
+
     private fun onTouchGrab(motionEvent: MotionEvent): Boolean {
         if (motionEvent.action == MotionEvent.ACTION_DOWN)
             mPresenter.onButtonClicked(GRAB)
@@ -138,23 +140,19 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View{
         tvColorGrab.text = "Color Grab: $color"
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setScoreBlue(score: Int) {
-        tvScoreBlue.text = "Score Blue: $score"
+        tvScoreBlue.text = getString(R.string.blueScore, score)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setScoreGreen(score: Int) {
-        tvScoreGreen.text = "Score Green: $score"
+        tvScoreGreen.text = getString(R.string.greenScore, score)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setScoreRed(score: Int) {
-        tvScoreRed.text = "Score Red: $score"
+        tvScoreRed.text = getString(R.string.redScore, score)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setScoreMissed(score: Int) {
-        tvScoreMissed.text = "Score Missed: $score"
+        tvScoreMissed.text = getString(R.string.missed, score)
     }
 }
