@@ -31,7 +31,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     val FINE_LOATION_ACCESS_REQUEST_CODE = 1
 
-    // Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
+    /*
+     Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
+     This method is called when either a device is found through discovery or when the bluetooth
+     state changed (eg. Bluetooth turning off or turning on)
+      */
+
     private val mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             mPresenter.bluetoothActionFound(context, intent)
@@ -42,6 +47,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        /*
+        If Bluetooth is available, setup buttons, register Receiver and ask for location permission
+        in order to be able to search for devices through discovery.
+         */
         if (isBluetoothAvailable()) {
             btnTurnOnBluetooth.setOnClickListener { mPresenter.turnBluetoothOn(this) }
 
@@ -57,7 +66,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             listViewPairedDevices.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ -> mPresenter.onItemClick(i, true) }
 
             button.setOnClickListener { _ -> askForPermission() }
-        } else {
+        } else { //if no Bluetooth is available, show empty screen and do nothing
             showNotSupported()
         }
     }
@@ -70,6 +79,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
+        /*
+        when the activity is destroyed it's important to cancle the discovery and unregister the
+        receiver to avoid battery issues
+         */
         if (isBluetoothAvailable()) {
             unregisterReceiver(mReceiver)
             mPresenter.cancelDiscovery()
