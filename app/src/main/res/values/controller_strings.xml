@@ -7,14 +7,14 @@
     <string name="btn_tip_up">tip up</string>
     <string name="btn_tip_down">tip down</string>
 
-    <string name="grab_zero">Grab: 0</string>
-    <string name="grab_dynamic">Grab: %1$d</string>
-    <string name="tip_zero">Tip: 0</string>
-    <string name="tip_dynamic">Tip: %1$d</string>
-    <string name="body_zero">Body: 0</string>
-    <string name="body_dynamic">Body: %1$d</string>
-    <string name="rotation_zero">Rotation: 0</string>
-    <string name="rotation_dynamic">Rotation: %1$d</string>
+    <string name="grab_zero">Grab: 0,0</string>
+    <string name="grab_dynamic">Grab: %1$.1f</string>
+    <string name="tip_zero">Tip: 0,0</string>
+    <string name="tip_dynamic">Tip: %1$.1f</string>
+    <string name="body_zero">Body: 0,0</string>
+    <string name="body_dynamic">Body: %1$.1f</string>
+    <string name="rotation_zero">Rotation: 0,0</string>
+    <string name="rotation_dynamic">Rotation: %1$.1f</string>
     <string name="grabbed_color_zero">Grabed Color: -</string>
     <string name="grabbed_color_dynamic">Grabed Color: %1$s</string>
 
