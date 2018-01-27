@@ -116,44 +116,39 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setBody(value: Float) {
-        tvValueBody.text = "Body: " + value
+        tvValueBody.text = getString(R.string.body_dynamic, value)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setRotation(value: Float) {
-        tvValueRotation.text = "Rotation: " + value
+        tvValueRotation.text = getString(R.string.rotation_dynamic, value)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setTip(value: Float) {
-        tvValueTip.text = "Tip: " + value
+        tvValueTip.text = getString(R.string.tip_dynamic, value)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setGrab(value: Float) {
-        tvValueGrab.text = "Grab: $value"
+        tvValueGrab.text = getString(R.string.grab_dynamic, value)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun setColorGrab(color: String) {
-        tvColorGrab.text = "Color Grab: $color"
+        tvColorGrab.text = getString(R.string.grabbed_color_dynamic, color)
     }
 
     override fun setScoreBlue(score: Int) {
-        tvScoreBlue.text = getString(R.string.blueScore, score)
+        tvScoreBlue.text = getString(R.string.blue_score_dynamic, score)
     }
 
     override fun setScoreGreen(score: Int) {
-        tvScoreGreen.text = getString(R.string.greenScore, score)
+        tvScoreGreen.text = getString(R.string.green_score_dynamic, score)
     }
 
     override fun setScoreRed(score: Int) {
-        tvScoreRed.text = getString(R.string.redScore, score)
+        tvScoreRed.text = getString(R.string.red_score_dynamic, score)
     }
 
     override fun setScoreMissed(score: Int) {
-        tvScoreMissed.text = getString(R.string.missed, score)
+        tvScoreMissed.text = getString(R.string.missed_dynamic, score)
     }
 }

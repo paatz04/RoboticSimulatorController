@@ -25,14 +25,14 @@
             android:layout_width="200dp"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="@string/grab"/>
+            android:text="@string/btn_grab"/>
 
         <Button
             android:id="@+id/btnRelease"
             android:layout_width="200dp"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="@string/release"/>
+            android:text="@string/btn_release"/>
     </LinearLayout>
 
     <LinearLayout
@@ -53,14 +53,14 @@
             android:layout_width="200dp"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="@string/tipUp"/>
+            android:text="@string/btn_tip_up"/>
 
         <Button
             android:id="@+id/btnTipDown"
             android:layout_width="200dp"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="@string/tipDown"/>
+            android:text="@string/btn_tip_down"/>
 
 
 
@@ -86,27 +86,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_red_dark"
-            android:text="TextView"/>
+            android:text="@string/red_score_zero"/>
 
         <TextView
             android:id="@+id/tvScoreBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@android:color/holo_blue_dark"/>
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="@string/blue_score_zero"/>
 
         <TextView
             android:id="@+id/tvScoreGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@android:color/holo_green_dark"/>
+            android:textColor="@android:color/holo_green_dark"
+            android:text="@string/green_score_zero"/>
 
         <TextView
             android:id="@+id/tvScoreMissed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"/>
+            android:text="@string/missed_zero"/>
 
     </LinearLayout>
 
@@ -127,7 +127,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Body"
+            android:text="@string/body_zero"
             android:textAlignment="center"
             android:textSize="12sp"/>
 
@@ -136,7 +136,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Rotation"
+            android:text="@string/rotation_zero"
             android:textAlignment="center"
             android:textSize="12sp"/>
 
@@ -145,7 +145,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Tip"
+            android:text="@string/tip_zero"
             android:textAlignment="center"
             android:textSize="12sp"/>
 
@@ -154,7 +154,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Grab"
+            android:text="@string/grab_zero"
             android:textAlignment="center"
             android:textSize="12sp"/>
 
@@ -168,7 +168,7 @@
         android:layout_below="@+id/llScores"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:text="TextView"/>
+        android:text="@string/grabbed_color_zero"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -176,7 +176,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Controller Mode"
+        android:text="@string/controller_mode"
         android:textSize="18sp"
         android:textStyle="bold"/>
 

@@ -13,6 +13,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
 
     init {
+        Log.d(MyBluetoothService::class.java.simpleName, "init")
         mConnectedThread = ConnectedThread()
         mConnectedThread.start()
     }
@@ -65,12 +66,14 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         override fun run() {
+            Log.d(MyBluetoothService::class.java.simpleName, "ConnectedThread run()")
             listenToInputStream()
         }
 
         private fun listenToInputStream() {
             while (true) {
                 try {
+                    Log.d(MyBluetoothService::class.java.simpleName, "listenToInputStream()")
                     sendReceivedDataToActivity(mInStream.readUTF())
                 } catch (e: IOException) {
                     Log.d(MyBluetoothService::class.java.simpleName, "Input stream was disconnected")
@@ -82,6 +85,8 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         private fun sendReceivedDataToActivity(receivedData: String) {
+            Log.d(MyBluetoothService::class.java.simpleName, "sendReceivedDataToActivity($receivedData)")
+
             val msg = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_MESSAGE, receivedData)
             msg.sendToTarget()
         }

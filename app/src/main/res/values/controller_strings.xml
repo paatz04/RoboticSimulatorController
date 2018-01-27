@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controller_mode">Controller Mode</string>
+
+    <string name="btn_grab">grab</string>
+    <string name="btn_release">release</string>
+    <string name="btn_tip_up">tip up</string>
+    <string name="btn_tip_down">tip down</string>
+
+    <string name="grab_zero">Grab: 0</string>
+    <string name="grab_dynamic">Grab: %1$d</string>
+    <string name="tip_zero">Tip: 0</string>
+    <string name="tip_dynamic">Tip: %1$d</string>
+    <string name="body_zero">Body: 0</string>
+    <string name="body_dynamic">Body: %1$d</string>
+    <string name="rotation_zero">Rotation: 0</string>
+    <string name="rotation_dynamic">Rotation: %1$d</string>
+    <string name="grabbed_color_zero">Grabed Color: -</string>
+    <string name="grabbed_color_dynamic">Grabed Color: %1$s</string>
+
+    <string name="red_score_zero">Red: 0</string>
+    <string name="red_score_dynamic">Red: %1$d</string>
+    <string name="blue_score_zero">Blue: 0</string>
+    <string name="blue_score_dynamic">Blue: %1$d</string>
+    <string name="green_score_zero">Green: 0</string>
+    <string name="green_score_dynamic">Green: %1$d</string>
+    <string name="missed_zero">Missed: 0</string>
+    <string name="missed_dynamic">Missed: %1$d</string>
+</resources>
