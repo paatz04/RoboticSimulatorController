@@ -1,4 +1,4 @@
-package com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces
+package com.tumpraktikum.roboticsimulatorcontroller.interfaces
 
 // Defines several constants used when transmitting messages between the
 // service and the UI.

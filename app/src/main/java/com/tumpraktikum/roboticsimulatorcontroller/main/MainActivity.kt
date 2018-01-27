@@ -26,17 +26,17 @@ import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
+    companion object {
+        private const val FINE_LOCATION_ACCESS_REQUEST_CODE = 1
+    }
 
     @Inject lateinit var mPresenter: MainPresenter
 
-    private val FINE_LOCATION_ACCESS_REQUEST_CODE = 1
-
-    /*
-     Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
-     This method is called when either a device is found through discovery or when the bluetooth
-     state changed (eg. Bluetooth turning off or turning on)
-      */
-
+    /**
+     * Create a BroadcastReceiver for ACTION_FOUND AND ACTION_STATE_CHANGED.
+     * This method is called when either a device is found through discovery or when the bluetooth
+     * state changed (eg. Bluetooth turning off or turning on)
+     */
     private val mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             mPresenter.bluetoothActionFound(context, intent)
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         return adapter
     }
 
-    /*
+    /**
     When requesting to turn on bluetooth, the result will be returned through the onActivityResult
     lifecycle method. The result is delegated to the presenter which will handle the result accordingly
      */
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         mPresenter.onActivityResult(requestCode, resultCode, data)
     }
 
-    /*
+    /**
     When requesting a permission (in our case the location permission for bluetooth discovery) the
     response is sent back through the onRequestPermissionResult method. This method checks if the
     permission has been granted, and if yes it sets the locationGranted property of the presenter.
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
-    /*
+    /**
     This methods asks for permission for location services, in order to make the bluetooth discovery work
     It's only required on devices post VERSION_CODES.M Marshmallow, because previously the permissions
     are not granted during runtime, but when the application is first installed. For >M the permission
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-    /*
+    /**
     Sets the list height manually, because two lists are within a Scrollview. Without this method
     the inner listViews would not expand and there for not work
      */
@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         setListViewHeightBasedOnChildren(listViewOtherDevices)
     }
 
-    /*
+    /**
     Method for Setting the Height of the ListView dynamically.
     Hack to fix the issue of not showing all the items of the ListView
     when placed inside a ScrollView

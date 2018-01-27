@@ -6,7 +6,6 @@ import android.content.Intent
 import android.hardware.SensorManager
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.ButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.CallerButtonManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
@@ -16,12 +15,11 @@ import com.tumpraktikum.roboticsimulatorcontroller.controller.dataconverter.Tran
 import com.tumpraktikum.roboticsimulatorcontroller.controller.dataconverter.TransferDataConverterException
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.CallerMotionDetector
 import com.tumpraktikum.roboticsimulatorcontroller.controller.sensors.MotionDetector
-import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
-import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothService
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
+import com.tumpraktikum.roboticsimulatorcontroller.bluetooth.MyBluetoothManager
+import com.tumpraktikum.roboticsimulatorcontroller.bluetooth.MyBluetoothService
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MessageConstants
 import javax.inject.Inject
 
-// ToDo init TextViews
 class ControllerPresenter
 @Inject
 constructor(private var mBluetoothManager: MyBluetoothManager)
@@ -131,5 +129,4 @@ constructor(private var mBluetoothManager: MyBluetoothManager)
             }
         }
     }
-
 }

@@ -1,3 +1,3 @@
-package com.tumpraktikum.roboticsimulatorcontroller.helper
+package com.tumpraktikum.roboticsimulatorcontroller.bluetooth
 
 class MyBluetoothServiceException(override var message:String): Exception()

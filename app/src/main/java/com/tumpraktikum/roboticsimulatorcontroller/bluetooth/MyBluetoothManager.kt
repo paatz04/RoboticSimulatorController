@@ -1,20 +1,19 @@
-package com.tumpraktikum.roboticsimulatorcontroller.helper
+package com.tumpraktikum.roboticsimulatorcontroller.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 
 
 class MyBluetoothManager {
+    companion object {
+        const val REQUEST_ENABLE_BT: Int = 1
+    }
 
     private val mBluetoothAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private lateinit var mBluetoothService: MyBluetoothService
-
-    companion object {
-        val REQUEST_ENABLE_BT: Int = 1
-
-    }
 
     fun isBluetoothEnabled(): Boolean {
         return mBluetoothAdapter.isEnabled
@@ -28,10 +27,13 @@ class MyBluetoothManager {
     }
 
     fun setService(myBluetoothService: MyBluetoothService) {
+        Log.d(MyBluetoothManager::class.toString(), "setService()")
+        if (::mBluetoothService.isInitialized)
+            mBluetoothService.close()
         mBluetoothService = myBluetoothService
     }
 
-    fun getService():MyBluetoothService {
+    fun getService(): MyBluetoothService {
         return mBluetoothService
     }
 
@@ -46,5 +48,4 @@ class MyBluetoothManager {
     fun queryPairedDevices(): Set<android.bluetooth.BluetoothDevice> {
         return mBluetoothAdapter.bondedDevices
     }
-
 }

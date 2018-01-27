@@ -1,9 +1,9 @@
-package com.tumpraktikum.roboticsimulatorcontroller.helper
+package com.tumpraktikum.roboticsimulatorcontroller.bluetooth
 
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.util.Log
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MessageConstants
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
@@ -11,9 +11,6 @@ import java.io.IOException
 class MyBluetoothService(private var mHandler: Handler, private val mSocket: BluetoothSocket) {
     private var mConnectedThread: ConnectedThread
 
-    companion object {
-        private const val TAG = "MY_APP_DEBUG_TAG"
-    }
 
     init {
         mConnectedThread = ConnectedThread()
@@ -25,7 +22,8 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
     }
 
     fun close() {
-      mConnectedThread.close()
+        Log.d(MyBluetoothService::class.toString(), "close")
+        mConnectedThread.close()
     }
 
     fun updateHandler(handler: Handler){
@@ -48,22 +46,20 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             }
         }
 
-        @Throws(IOException::class)
         private fun getInputStream(): DataInputStream {
             try {
                 return DataInputStream(mSocket.inputStream)
             } catch (e: IOException) {
-                Log.e(TAG, "Error occurred when creating input stream", e)
+                Log.e(MyBluetoothService::class.java.simpleName, "Error occurred when creating input stream", e)
                 throw IOException("Error occurred when creating input stream", e)
             }
         }
 
-        @Throws(IOException::class)
         private fun getOutputStream(): DataOutputStream {
             try {
                 return DataOutputStream(mSocket.outputStream)
             } catch (e: IOException) {
-                Log.e(TAG, "Error occurred when creating output stream", e)
+                Log.e(MyBluetoothService::class.java.simpleName, "Error occurred when creating output stream", e)
                 throw IOException("Error occurred when creating output stream", e)
             }
         }
@@ -77,7 +73,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
                 try {
                     sendReceivedDataToActivity(mInStream.readUTF())
                 } catch (e: IOException) {
-                    Log.d(TAG, "Input stream was disconnected", e)
+                    Log.d(MyBluetoothService::class.java.simpleName, "Input stream was disconnected")
                     sendBluetoothConnectionClosedToActivity()
                     close()
                     break
@@ -95,7 +91,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
                 mOutStream.writeUTF(message)
                 sendSentMessageToActivity(message)
             } catch (e: IOException) {
-                Log.e(TAG, "Error occurred when sending data", e)
+                Log.e(MyBluetoothService::class.java.simpleName, "Error occurred when sending data")
                 sendBluetoothConnectionClosedToActivity()
                 close()
             }
@@ -110,7 +106,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         private fun sendBluetoothConnectionClosedToActivity() {
             val message = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_CONNECTION_CLOSED)
             mHandler.sendMessage(message)
-            Log.d("MyBluetoothService", "sent connection closed")
+            Log.d(MyBluetoothService::class.java.simpleName, "sent connection closed")
         }
 
         fun close() {
@@ -123,7 +119,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             try{
                 mInStream.close()
             } catch (e: IOException) {
-                Log.e(TAG, "Could not close the InputStream", e)
+                Log.e(MyBluetoothService::class.java.simpleName, "Could not close the InputStream")
             }
         }
 
@@ -131,7 +127,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             try{
                 mOutStream.close()
             } catch (e: IOException) {
-                Log.e(TAG, "Could not close the OutputStream", e)
+                Log.e(MyBluetoothService::class.java.simpleName, "Could not close the OutputStream")
             }
         }
 
@@ -139,7 +135,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             try{
                 mSocket.close()
             } catch (e: IOException) {
-                Log.e(TAG, "Could not close the socket", e)
+                Log.e(MyBluetoothService::class.java.simpleName, "Could not close the socket")
             }
         }
     }

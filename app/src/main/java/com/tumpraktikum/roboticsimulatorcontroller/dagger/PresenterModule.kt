@@ -2,7 +2,7 @@ package com.tumpraktikum.roboticsimulatorcontroller.dagger
 
 import android.content.Context
 import com.tumpraktikum.roboticsimulatorcontroller.controller.ControllerPresenter
-import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
+import com.tumpraktikum.roboticsimulatorcontroller.bluetooth.MyBluetoothManager
 import com.tumpraktikum.roboticsimulatorcontroller.main.MainPresenter
 import dagger.Module
 import dagger.Provides

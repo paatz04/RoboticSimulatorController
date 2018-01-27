@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import com.tumpraktikum.roboticsimulatorcontroller.R
@@ -55,9 +56,9 @@ class ControllerActivity : AppCompatActivity(), ControllerContract.View {
 
     override fun onResume() {
         super.onResume()
-        mPresenter.updateBluetoothHandler()
         mPresenter.activateMotionDetector()
         mPresenter.takeView(this)
+        mPresenter.updateBluetoothHandler()
     }
 
     override fun onPause() {

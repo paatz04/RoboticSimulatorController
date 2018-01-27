@@ -9,19 +9,18 @@ import android.os.Message
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.tumpraktikum.roboticsimulatorcontroller.R
-import com.tumpraktikum.roboticsimulatorcontroller.helper.ConnectThread
-import com.tumpraktikum.roboticsimulatorcontroller.helper.ConnectThreadException
-import com.tumpraktikum.roboticsimulatorcontroller.helper.MyBluetoothManager
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
+import com.tumpraktikum.roboticsimulatorcontroller.bluetooth.ConnectThread
+import com.tumpraktikum.roboticsimulatorcontroller.bluetooth.ConnectThreadException
+import com.tumpraktikum.roboticsimulatorcontroller.bluetooth.MyBluetoothManager
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MessageConstants
 import javax.inject.Inject
 
 
 //The MyBluetoothManager instance and the context are injected using Dagger2 injection.
-class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoothManager, private val mContext:Context) :
+class MainPresenter @Inject constructor(private val mBluetoothManager: MyBluetoothManager, private val mContext:Context) :
         MainContract.Presenter {
 
     private lateinit var mView: MainContract.View
-
 
     private var mPermissionNearbyBluetoothDevices: Boolean = false
     //Thread that connects to a specific bluetooth device
@@ -57,14 +56,14 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
     }
 
     private fun isBluetoothOn(): Boolean {
-        return mBluetoothmanager.isBluetoothEnabled()
+        return mBluetoothManager.isBluetoothEnabled()
     }
 
     private fun initBluetoothAdapter() {
         initBluetoothAdapterPairedDevices()
         initBluetoothAdapterNotPairedDevices()
         //start searching new bluetooth devices
-        mBluetoothmanager.startDiscovery()
+        mBluetoothManager.startDiscovery()
     }
 
     private fun initBluetoothAdapterPairedDevices() {
@@ -74,7 +73,7 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
         mPairedAdapter.setItems(mPairedItems)
         mPairedAdapter.notifyDataSetChanged()
 
-        mBluetoothmanager.queryPairedDevices().forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
+        mBluetoothManager.queryPairedDevices().forEach { bluetoothDevice -> mPairedItems.add(bluetoothDevice) }
         mPairedAdapter.setItems(mPairedItems)
         mPairedAdapter.notifyDataSetChanged()
 
@@ -90,11 +89,11 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
     }
 
     override fun cancelDiscovery() {
-        mBluetoothmanager.cancelDiscovery()
+        mBluetoothManager.cancelDiscovery()
     }
 
     override fun turnBluetoothOn(context: AppCompatActivity) {
-        mBluetoothmanager.enableBluetooth(context)
+        mBluetoothManager.enableBluetooth(context)
     }
 
     override fun connectToDevice() {
@@ -190,10 +189,10 @@ class MainPresenter @Inject constructor(private val mBluetoothmanager: MyBluetoo
     private fun getConnectThread(position: Int, pairedDevice: Boolean, mHandler: Handler): ConnectThread {
         return if (pairedDevice) {
             Log.d("test", "Name: " + mPairedItems[position].address)
-            ConnectThread(mPairedItems[position], mBluetoothmanager, mHandler)
+            ConnectThread(mPairedItems[position], mBluetoothManager, mHandler)
         } else {
             Log.d("test", "Name: " + mItems[position].address)
-            ConnectThread(mItems[position], mBluetoothmanager, mHandler)
+            ConnectThread(mItems[position], mBluetoothManager, mHandler)
         }
     }
 

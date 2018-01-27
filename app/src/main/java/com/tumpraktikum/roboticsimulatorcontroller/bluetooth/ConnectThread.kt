@@ -1,11 +1,11 @@
-package com.tumpraktikum.roboticsimulatorcontroller.helper
+package com.tumpraktikum.roboticsimulatorcontroller.bluetooth
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues.TAG
 import android.os.Handler
 import android.util.Log
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.MessageConstants
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.MessageConstants
 import java.io.IOException
 import java.util.*
 
@@ -73,7 +73,7 @@ class ConnectThread(private val mDevice: BluetoothDevice, private val mBluetooth
         mHandler.sendMessage(msg)
     }
 
-    // Closes the client socket and causes the thread to finish.
+    // Closes the client socket
     fun cancel() {
         try {
             mSocket.close()

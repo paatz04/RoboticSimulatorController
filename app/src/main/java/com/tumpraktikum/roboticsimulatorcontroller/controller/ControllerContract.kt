@@ -3,8 +3,8 @@ import android.content.Context
 import android.content.Intent
 import android.hardware.SensorManager
 import com.tumpraktikum.roboticsimulatorcontroller.controller.buttons.enums.RobotControlButton
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.BasePresenter
-import com.tumpraktikum.roboticsimulatorcontroller.helper.interfaces.BaseView
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.BasePresenter
+import com.tumpraktikum.roboticsimulatorcontroller.interfaces.BaseView
 
 interface ControllerContract {
 
