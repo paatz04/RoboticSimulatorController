@@ -13,26 +13,37 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
 
 
     init {
-        Log.d(MyBluetoothService::class.java.simpleName, "init")
+        //when this object is initialized the private inner class is created and the thread started
+        //through Thread.start();
         mConnectedThread = ConnectedThread()
         mConnectedThread.start()
     }
 
+    /*
+     *  This method is used to write data over the socket (representing our bluetooth connection)
+     */
     fun write(message: String) {
         mConnectedThread.write(message)
     }
 
     fun close() {
-        Log.d(MyBluetoothService::class.toString(), "close")
-        mConnectedThread.close()
+      mConnectedThread.close()
     }
 
+    /*
+    When the activity changes, a new handler is passed for the specific activity to listen to the,
+    Thread message and handle them accordingly.
+     */
     fun updateHandler(handler: Handler){
         Log.d("MyBluetoothService", "Handler updated")
         this.mHandler = handler
     }
 
-
+    /*
+    The ConnectedThread holds a reference of the input and output stream and is responsible for writing
+    and receiving data over the bluetooth socket. Errors are handled through the Handler, and not directly
+    as exceptions or negative return values
+     */
     private inner class ConnectedThread : Thread() {
 
         private val mInStream: DataInputStream
@@ -65,11 +76,19 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             }
         }
 
+        /*
+        The main job of this thread is to listen for input from the mSocket.inputStream
+         */
         override fun run() {
             Log.d(MyBluetoothService::class.java.simpleName, "ConnectedThread run()")
             listenToInputStream()
         }
 
+
+        /*
+        When data is received through the input stream, the data is delegated to the activity, using the
+        appropriate handler. If an exception occurs the connection is closed and the activity is also notifyed
+         */
         private fun listenToInputStream() {
             while (true) {
                 try {
@@ -91,6 +110,11 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             msg.sendToTarget()
         }
 
+
+        /*
+        This method writes a string in UTF format through the mSocket.outputStream. (to the established
+        bluetooth connection/device) If an error occurs the connection closes and the activity is notified
+         */
         fun write(message: String) {
             try {
                 mOutStream.writeUTF(message)
@@ -114,6 +138,9 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             Log.d(MyBluetoothService::class.java.simpleName, "sent connection closed")
         }
 
+        /*
+        This method closes the input/output streams and the socket on errors
+         */
         fun close() {
             closeInputStream()
             closeOutputStream()
