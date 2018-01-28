@@ -27,3 +27,6 @@ Hannes Oberprantacher
 Jose Acevedo
 
 Sebastian Eckl
+
+# Wiki
+https://github.com/paatz04/RoboticSimulatorController/wiki
