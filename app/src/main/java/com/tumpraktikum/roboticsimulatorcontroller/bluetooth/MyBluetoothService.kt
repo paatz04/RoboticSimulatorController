@@ -27,14 +27,14 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
     }
 
     fun close() {
-      mConnectedThread.close()
+        mConnectedThread.close()
     }
 
     /*
     When the activity changes, a new handler is passed for the specific activity to listen to the,
     Thread message and handle them accordingly.
      */
-    fun updateHandler(handler: Handler){
+    fun updateHandler(handler: Handler) {
         Log.d("MyBluetoothService", "Handler updated")
         this.mHandler = handler
     }
@@ -53,8 +53,9 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             try {
                 mInStream = getInputStream()
                 mOutStream = getOutputStream()
-            }catch (e: IOException) {
-                throw MyBluetoothServiceException(e.message ?: "Error occured when creating input/output stream")
+            } catch (e: IOException) {
+                throw MyBluetoothServiceException(e.message
+                        ?: "Error occured when creating input/output stream")
             }
         }
 
@@ -84,7 +85,6 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             listenToInputStream()
         }
 
-
         /*
         When data is received through the input stream, the data is delegated to the activity, using the
         appropriate handler. If an exception occurs the connection is closed and the activity is also notifyed
@@ -103,18 +103,10 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
             }
         }
 
-        private fun sendReceivedDataToActivity(receivedData: String) {
-            Log.d(MyBluetoothService::class.java.simpleName, "sendReceivedDataToActivity($receivedData)")
-
-            val msg = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_MESSAGE, receivedData)
-            msg.sendToTarget()
-        }
-
-
         /*
-        This method writes a string in UTF format through the mSocket.outputStream. (to the established
-        bluetooth connection/device) If an error occurs the connection closes and the activity is notified
-         */
+      This method writes a string in UTF format through the mSocket.outputStream. (to the established
+      bluetooth connection/device) If an error occurs the connection closes and the activity is notified
+       */
         fun write(message: String) {
             try {
                 mOutStream.writeUTF(message)
@@ -124,6 +116,13 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
                 sendBluetoothConnectionClosedToActivity()
                 close()
             }
+        }
+
+        //communication through handlers
+        private fun sendReceivedDataToActivity(receivedData: String) {
+            Log.d(MyBluetoothService::class.java.simpleName, "sendReceivedDataToActivity($receivedData)")
+            val msg = mHandler.obtainMessage(MessageConstants.MESSAGE_BLUETOOTH_MESSAGE, receivedData)
+            msg.sendToTarget()
         }
 
         private fun sendSentMessageToActivity(message: String) {
@@ -148,7 +147,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         private fun closeInputStream() {
-            try{
+            try {
                 mInStream.close()
             } catch (e: IOException) {
                 Log.e(MyBluetoothService::class.java.simpleName, "Could not close the InputStream")
@@ -156,7 +155,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         private fun closeOutputStream() {
-            try{
+            try {
                 mOutStream.close()
             } catch (e: IOException) {
                 Log.e(MyBluetoothService::class.java.simpleName, "Could not close the OutputStream")
@@ -164,7 +163,7 @@ class MyBluetoothService(private var mHandler: Handler, private val mSocket: Blu
         }
 
         private fun closeSocket() {
-            try{
+            try {
                 mSocket.close()
             } catch (e: IOException) {
                 Log.e(MyBluetoothService::class.java.simpleName, "Could not close the socket")

@@ -158,10 +158,10 @@ class MainPresenter @Inject constructor(private val mBluetoothManager: MyBluetoo
         val mHandler = getHandler()
         try{
             mConnectThread = getConnectThread(position, pairedDevice, mHandler)
+            mConnectThread.start()
         }catch (e: ConnectThreadException) {
             handleConnectionError()
         }
-        mConnectThread.start()
     }
 
     /*
