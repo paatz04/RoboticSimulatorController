@@ -1,6 +1,6 @@
 # RoboticSimulatorController
 
-# Description:
+# Description
 This is the Controller App, used to control a Robotic Arm in a V-REP simulation using Bluetooth.
 The App only works on devices that support blueetooth. 
 The min SDK Version is 16
