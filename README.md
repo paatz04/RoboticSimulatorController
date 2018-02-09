@@ -10,7 +10,7 @@ The min SDK Version is 16
 /controller contains the ControllerActivity which acts as the apps main functional screen offering inputs and listneing to sensor montion to control the Robotic Arm. Data send back from the simulator is also visualized in the ControllerActivity <br>
 
 # Installation
-The app is ready to install as soon as the gradle sync completes.
+The app is ready to install as soon as the gradle sync completes. The device on which the app is installed should be able of Bluetooth and have Android API-Level of at least 16.
 The java bluetooth server needs to run on a computer with working bluetooth and can be found here: https://github.com/paatz04/RoboticSimulatorServer
 The same computer needs to run the V-REP education simulator with the simulation on it.
 
